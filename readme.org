@@ -1,0 +1,13 @@
+#+title: README
+#+author: tusharhero
+#+email: tusharhero@sdf.org
+
+DIDC (DIDC Is Desktop Configuration) contains my attempt at configuring the perfect
+desktop, it is kind of similar to [[https://codeberg.org/tusharhero/ecfpaw/][my Emacs configuration]].
+
+Currently, I am undecided on how exactly this is going to work, here
+are some ideas I have:
+- Keyboard settings using [[https://github.com/kmonad/kmonad][Kmonad]].
+- [[https://swaywm.org/][Sway]] Wayland compositor as the window manager.
+- [[https://codeberg.org/dnkl/foot][Foot]] as my terminal emulator
+- Eventually [[https://guix.gnu.org/][GNU Guix]] as my Operating system, (Currently its [[https://archlinux.org/][Archlinux]]).
