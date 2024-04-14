@@ -47,7 +47,6 @@
 ### Output configuration
 #
 # Default wallpaper (more resolutions are available in /usr/share/backgrounds/sway/)
-output * bg   /home/tusharhero/Documents/didc/backgrounds/man-standing-infront-of-light.jpeg fill
 ### Idle configuration
 #
 # Example configuration:
@@ -68,6 +67,11 @@ bar {
 }
 
 include /etc/sway/config.d/*
+#+end_src
+** Background
+The wallpapers are stored in backgrounds, they need to be in =~/.local/share/backgrounds/=.
+#+begin_src conf-space :tangle config/sway/config :noweb yes
+output * bg  ~/.local/share/backgrounds/man-standing-infront-of-light.jpeg fill
 #+end_src
 ** Gaps
 #+begin_src conf-space :tangle config/sway/config :noweb yes
