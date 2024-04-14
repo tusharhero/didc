@@ -3,7 +3,7 @@
 #+AUTHOR: tusharhero
 #+EMAIL: tusharhero@sdf.org
 #+STARTUP: content
-#+PROPERTY: header-args: :noweb yes :mkdirp yes
+#+PROPERTY: header-args :noweb yes :mkdirp yes
 * TODO
 ** TODO Initial configuration
 ** DONE Add most options to org tables
@@ -43,7 +43,7 @@
 #+end_src
 * WINDOW MANAGER
 ** Configuration skeleton
-#+begin_src conf-space :tangle config/sway/config :noweb yes
+#+begin_src conf-space :tangle config/sway/config
 <<set-pref-prog>>
 
 bar {
@@ -62,7 +62,7 @@ computer goes to sleep.
 |-----------+-------+---------------------------------|
 | lock      |   300 | Seconds to wait before locking  |
 | sleep     |   600 | Seconds to wait before sleeping |
-#+begin_src conf-space :tangle config/sway/config :noweb yes
+#+begin_src conf-space :tangle config/sway/config
 exec swayidle -w \
          timeout <<getvar(idle-config,"lock")>> 'swaylock -f -c 000000' \
          timeout <<getvar(idle-config,"sleep")>> 'swaymsg "output * power off"' resume 'swaymsg "output * power on"' \
@@ -70,18 +70,18 @@ exec swayidle -w \
 #+end_src
 ** Background
 The wallpapers are stored in backgrounds, they need to be in =~/.local/share/backgrounds/=.
-#+begin_src conf-space :tangle config/sway/config :noweb yes
+#+begin_src conf-space :tangle config/sway/config
 output * bg  ~/.local/share/backgrounds/man-standing-infront-of-light.jpeg fill
 #+end_src
 ** Gaps
-#+begin_src conf-space :tangle config/sway/config :noweb yes
+#+begin_src conf-space :tangle config/sway/config
  gaps inner 10
 #+end_src
 ** Status bar
 :PROPERTIES:
-:header-args: :noweb-ref statusbar 
+:header-args: :noweb-ref statusbar :noweb yes
 :END:
-#+begin_src conf-space :noweb yes
+#+begin_src conf-space
 position top
 mode dock
 status_command while date +'%Y-%m-%d Q-%q %a %H:%M:%S' ; do sleep 1; done
@@ -92,7 +92,7 @@ colors {
 #+end_src
 ** Preferred Programs
 :PROPERTIES:
-:header-args: :tangle no :noweb-ref set-pref-prog
+:header-args: :noweb-ref set-pref-prog :noweb yes
 :END:
 #+NAME: pref-programs
 | variable | value | Description       |
@@ -104,7 +104,7 @@ This contains pipes and hence it is impossible to add it to the table.
 set $menu wmenu_run
 #+end_src
 
-#+begin_src conf-space :noweb yes
+#+begin_src conf-space
 set <<getallkeyvaluepairs(pref-programs)>>
 #+end_src
 * TERMINAL
@@ -121,7 +121,7 @@ to =xterm-256color=.
 :END:
 [[https://github.com/kmonad/kmonad][Kmonad]] allows me to change the ~CAPSLOCK~ key to an ~ESC~ key, which
 is pretty useful for Evil(Vim).
-#+begin_src lisp :tangle config/kmonad/default.kbd :mkdirp yes
+#+begin_src lisp :tangle config/kmonad/default.kbd
   (defcfg
       input  (device-file "/dev/input/by-id/usb-413c_Dell_KB216_Wired_Keyboard-event-kbd")
     output (uinput-sink "DIDC Kmonad output")
@@ -154,7 +154,7 @@ is pretty useful for Evil(Vim).
 #+end_src
 ** Window manager
 :PROPERTIES:
-:header-args: :tangle config/sway/config
+:header-args: :tangle config/sway/config :noweb yes
 :END:
 *** Set keys
 #+name: set-keys
@@ -165,7 +165,7 @@ is pretty useful for Evil(Vim).
 | $down    | j     |                                                            |
 | $up      | k     |                                                            |
 | $right   | l     |                                                            |
-#+begin_src conf-space :noweb yes
+#+begin_src conf-space
 set <<getallkeyvaluepairs(set-keys)>>
 #+end_src
 *** Basic
@@ -177,7 +177,7 @@ set <<getallkeyvaluepairs(set-keys)>>
 | $mod+d       | exec $menu | Start launcher                |
 | $mod+Shift+c | reload     | Reload the configuration file |
 
-#+begin_src conf-space :noweb yes
+#+begin_src conf-space
 bindsym <<getallkeyvaluepairs(basic-keybinds)>>
 #+end_src
 
@@ -185,7 +185,7 @@ Drag floating windows by holding down $mod and left mouse
 button. Resize them with right mouse button + $mod.  Despite the name,
 also works for non-floating windows.  Change normal to inverse to use
 left mouse button for resizing and right mouse button for dragging.
-#+begin_src conf-space 
+#+begin_src conf-space
 floating_modifier $mod normal
 #+end_src
 
@@ -213,28 +213,28 @@ bindsym $mod+Shift+e exec swaynag -t warning -m 'You pressed the exit shortcut. 
 | $mod+Shift+Down   | move down   |                         |
 | $mod+Shift+Up     | move up     |                         |
 | $mod+Shift+Right  | move right  |                         |
-#+begin_src conf-space :noweb yes
+#+begin_src conf-space
 bindsym <<getallkeyvaluepairs(move-keybinds)>>
 #+end_src
 *** Workspaces
 #+name: workspace-config-gen
-#+begin_src elisp :var format=switch-workspace-format :wrap src conf-space :tangle no 
+#+begin_src elisp :var format=switch-workspace-format :wrap src conf-space :tangle no
 (mapconcat (lambda (keybind) (format format keybind keybind) ) '(1 2 3 4 5 6 7 8 9 0))
 #+end_src
 **** Switch Workspaces keybinds
 #+name: switch-workspace-format
-#+begin_example format 
+#+begin_example format
   bindsym $mod+%d workspace number %d
 #+end_example
-#+begin_src conf-space :noweb yes
+#+begin_src conf-space
 <<workspace-config-gen(switch-workspace-format)>>
 #+end_src
 **** Move focused container to workspace
 #+name: move-focused-workspace-format
-#+begin_example format 
+#+begin_example format
   bindsym $mod+Shift+%d move container to workspace number %d
 #+end_example
-#+begin_src conf-space :noweb yes
+#+begin_src conf-space
 <<workspace-config-gen(move-focused-workspace-format)>>
 #+end_src
 *** Layout
@@ -250,7 +250,7 @@ bindsym <<getallkeyvaluepairs(move-keybinds)>>
 | $mod+Shift+space | floating toggle     | Toggle the current focus between tiling and floating mode |
 | $mod+space       | focus mode_toggle   | Swap focus between the tiling area and the floating area  |
 | $mod+a           | focus parent        | Move focus to the parent container                        |
-#+begin_src conf-space :noweb yes
+#+begin_src conf-space
 bindsym <<getallkeyvaluepairs(layout-keybinds)>>
 #+end_src
 *** Scratchpad
@@ -262,7 +262,7 @@ bindsym <<getallkeyvaluepairs(layout-keybinds)>>
 
 Sway has a "scratchpad", which is a bag of holding for windows. You
 can send windows there and get them back later.
-#+begin_src conf-space :noweb yes
+#+begin_src conf-space
 bindsym <<getallkeyvaluepairs(scratchpad-keybinds)>>
 #+end_src
 *** Resizing containers
@@ -279,7 +279,7 @@ bindsym <<getallkeyvaluepairs(scratchpad-keybinds)>>
 | $mod+Right  | resize grow width 10px    |                                           |
 | Return      | mode "Default"            |                                           |
 | Escape      | mode "Default"            | Return to default mode                    |
-#+begin_src conf-space :noweb yes
+#+begin_src conf-space
   mode "resize" {
        bindsym <<getallkeyvaluepairs(resizing-containers-keybinds)>>
   }
@@ -293,20 +293,17 @@ bindsym <<getallkeyvaluepairs(scratchpad-keybinds)>>
 | font-name | Iosevka NF |
 | font-size | 14         |
 ** Terminal emulator
-#+begin_src conf-unix :tangle config/foot/foot.ini :noweb yes :noweb-prefix no
+#+begin_src conf-unix :tangle config/foot/foot.ini  :noweb-prefix no
   [main]
   font=<<getvar(table=font-settings,variable="font-name")>>:size=<<getvar(table=font-settings,variable="font-size")>>
   dpi-aware=yes
 #+end_src
 ** Window manager
 #+name: Font
-#+begin_src conf-space :noweb yes :tangle config/sway/config
+#+begin_src conf-space  :tangle config/sway/config
   font '<<getvar(table=font-settings,variable="font-name")>>' <<getvar(table=font-settings,variable="font-size")>>
 #+end_src
 * COLORS
-:PROPERTIES:
-:header-args: :noweb yes
-:END:
 ** Parameters
 #+name: basic-colors
 | color      | hexvalue |
