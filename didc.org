@@ -86,7 +86,7 @@ colors {
    <<statusbar-colors>>
 }
 #+end_src
-* Preferred programs
+* PREFERRED PROGRAMS
 :PROPERTIES:
 :header-args: :tangle no :noweb-ref set-pref-prog
 :END:
@@ -145,7 +145,6 @@ is pretty useful for Evil(Vim).
 :PROPERTIES:
 :header-args: :tangle config/sway/config
 :END:
-*** Helper
 *** Set keys
 #+name: set-keys
 | variable | value | description                                                |
