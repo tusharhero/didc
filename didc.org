@@ -3,7 +3,7 @@
 #+AUTHOR: tusharhero
 #+EMAIL: tusharhero@sdf.org
 #+STARTUP: content
-#+PROPERTY: :header-args: :noweb yes :mkdirp yes
+#+PROPERTY: header-args: :noweb yes :mkdirp yes
 * TODO
 ** TODO Initial configuration
 ** TODO Add most options to org tables
