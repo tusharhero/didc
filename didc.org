@@ -6,7 +6,7 @@
 #+PROPERTY: header-args: :noweb yes :mkdirp yes
 * TODO
 ** TODO Initial configuration
-** TODO Add most options to org tables
+** DONE Add most options to org tables
 ** TODO Document everything
 ** TODO Probably use GNU stew or something
 ** TODO Better org tangling game
@@ -40,23 +40,6 @@
 #+name: getallkeyvaluepairs
 #+begin_src elisp :var table=default :tangle no :wrap src conf-space
 (mapconcat (lambda (key) (format "%s %s" (car key) (cadr key))) table "\n")
-#+end_src
-* PREFERRED PROGRAMS
-:PROPERTIES:
-:header-args: :tangle no :noweb-ref set-pref-prog
-:END:
-#+NAME: pref-programs
-| variable | value | Description       |
-|----------+-------+-------------------|
-| $term    | foot  | Terminal emulator |
-
-This contains pipes and hence it is impossible to add it to the table.
-#+begin_src conf-space
-set $menu dmenu_path | wmenu | xargs swaymsg exec --
-#+end_src
-
-#+begin_src conf-space :noweb yes
-set <<getallkeyvaluepairs(pref-programs)>>
 #+end_src
 * WINDOW MANAGER
 ** Configuration skeleton
@@ -106,6 +89,23 @@ height 0
 colors {
    <<statusbar-colors>>
 }
+#+end_src
+** Preferred Programs
+:PROPERTIES:
+:header-args: :tangle no :noweb-ref set-pref-prog
+:END:
+#+NAME: pref-programs
+| variable | value | Description       |
+|----------+-------+-------------------|
+| $term    | foot  | Terminal emulator |
+
+This contains pipes and hence it is impossible to add it to the table.
+#+begin_src conf-space
+set $menu wmenu_run
+#+end_src
+
+#+begin_src conf-space :noweb yes
+set <<getallkeyvaluepairs(pref-programs)>>
 #+end_src
 * TERMINAL
 Because most programs don't recognize =foot= anyway, I changed it to
