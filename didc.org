@@ -101,7 +101,7 @@ colors {
 
 This contains pipes and hence it is impossible to add it to the table.
 #+begin_src conf-space
-set $menu wmenu_run
+set $menu wmenu_run <<menu-font>>
 #+end_src
 
 #+begin_src conf-space
@@ -302,6 +302,11 @@ bindsym <<getallkeyvaluepairs(scratchpad-keybinds)>>
 #+name: Font
 #+begin_src conf-space  :tangle config/sway/config
   font '<<getvar(table=font-settings,variable="font-name")>>' <<getvar(table=font-settings,variable="font-size")>>
+#+end_src
+** Menu
+#+name: menu-font
+#+begin_src shell
+-f '<<getvar(table=font-settings,variable="font-name")>> <<getvar(table=font-settings,variable="font-size")>>'
 #+end_src
 * COLORS
 ** Parameters
