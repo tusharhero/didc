@@ -107,6 +107,12 @@ colors {
    <<statusbar-colors>>
 }
 #+end_src
+* TERMINAL
+Because most programs don't recognize =foot= anyway, I changed it to
+to =xterm-256color=.
+#+begin_src conf-unix :tangle config/foot/foot.ini
+  [main]
+  term=xterm-256color
 #+end_src
 * KEYBINDINGS
 ** Kmonad
