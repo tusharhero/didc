@@ -80,7 +80,7 @@ include /etc/sway/config.d/*
 #+begin_src conf-space :noweb yes
 position top
 mode dock
-status_command while date +'%Y-%m-%d %X' ; do sleep 1; done
+status_command while date +'%Y-%m-%d Q-%q %a %H:%M:%S' ; do sleep 1; done
 height 0
 colors {
    <<statusbar-colors>>
