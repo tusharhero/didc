@@ -101,7 +101,7 @@ colors {
 
 This contains pipes and hence it is impossible to add it to the table.
 #+begin_src conf-space
-set $menu wmenu_run <<menu-font>>
+set $menu wmenu_run <<menu-font>> <<menu-colors>>
 #+end_src
 
 #+begin_src conf-space
@@ -338,4 +338,9 @@ inactive_workspace #<<getvar(table=statusbar-inactive-colors,variable="border")>
 ** Lock screen
 #+begin_src conf-unix :tangle config/swaylock/config
 color=<<getvar(table=basic-colors,variable="background")>>
+#+end_src
+
+** Menu
+#+begin_src shell :noweb-ref menu-colors
+-N <<getvar(table=basic-colors,variable="background")>>
 #+end_src
