@@ -333,3 +333,7 @@ background #<<getvar(table=basic-colors,variable="background")>>
 separator #<<getvar(table=basic-colors,variable="foreground")>>
 inactive_workspace #<<getvar(table=statusbar-inactive-colors,variable="border")>> #<<getvar(table=basic-colors,variable="background")>> #<<getvar(table=statusbar-inactive-colors,variable="inactive-text")>>
 #+end_src
+** Lock screen
+#+begin_src conf-unix :tangle config/swaylock/config
+color=<<getvar(table=basic-colors,variable="background")>>
+#+end_src
