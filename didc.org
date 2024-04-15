@@ -299,9 +299,26 @@ left mouse button for resizing and right mouse button for dragging.
 floating_modifier $mod normal
 #+end_src
 
+**** Exit
 This exits sway (logs you out of your Wayland session).
-#+begin_src conf-space
-bindsym $mod+Shift+e exec swaynag -t warning -m 'You pressed the exit shortcut. Do you really want to exit sway? This will end your Wayland session.' -B 'Yes, exit sway' 'swaymsg exit'
+#+name: exit-commands
+| message            | command               |
+|--------------------+-----------------------|
+| Exit sway(log out) | =swaymsg exit=        |
+| Power off          | =systemctl poweroff=  |
+| Reboot             | =systemctl reboot=    |
+| Hibernate          | =systemctl hibernate= |
+| Lock               | =swaylock=            |
+#+name: get-exit-arg-commands
+#+begin_src elisp :var table=exit-commands :tangle no
+  (mapconcat
+   (lambda (command)
+     (format "-B \'%s\' \'%s\'"
+             (car command) (string-trim (cadr command) "=" "=")))
+   table " ")
+#+end_src
+#+begin_src conf-space :noweb yes
+  bindsym $mod+Shift+e exec swaynag -m "Exit commands" <<get-exit-arg-commands()>>
 #+end_src
 *** Moving around
 #+NAME: move-keybinds
