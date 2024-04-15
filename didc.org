@@ -76,6 +76,31 @@ literate configuration magic through out this document.
 #+begin_src elisp :var table=default :tangle no :wrap src conf-space
 (mapconcat (lambda (key) (format "%s %s" (car key) (cadr key))) table "\n")
 #+end_src
+* PACKAGES
+So, we have this table to document all the packages that are needed
+for this configuration to work. Currently, I will only document the
+names of the Arch Linux packages.
+#+name: packages
+| package           | archlinux          | description                                                   |
+|-------------------+--------------------+---------------------------------------------------------------|
+| Sway              | =sway=             | The Wayland compositing window manager                        |
+| Swaybg            | =swaybg=           | Wallpaper tool for Wayland compositors                        |
+| Swaylock          | =swaylock=         | Screen locker for Wayland                                     |
+| Foot              | =foot=             | Fast, lightweight, and minimalistic Wayland terminal emulator |
+| GNU Emacs         | =emacs-wayland=    | Emacs, it is used to detangle this package                    |
+| GNU Stow          | =stow=             | It is used to sym link the configuration to correct places    |
+| Iosevka Nerd font | =ttf-iosevka-nerd= | Default font used in our configuration                        |
+| Wmenu             | =wmenu=            | Menu/Application launcher                                     |
+| Kmonad            | =kmonad=           | Used for keyboard configuration                               |
+
+#+name: getpkglist
+#+begin_src elisp :var table=packages n=1 :tangle no
+  (mapconcat (lambda (key) (format "%s" (string-trim (nth n key) "=" "="))) table "\n")
+#+end_src
+
+#+begin_src conf-unix :tangle archpkglist
+ <<getpkglist(packages,1)>>
+#+end_src
 * WINDOW MANAGER
 I am currently using [[https://swaywm.org/][Sway]].
 ** Configuration skeleton
