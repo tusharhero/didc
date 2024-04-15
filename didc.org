@@ -200,12 +200,13 @@ set <<getallkeyvaluepairs(set-keys)>>
 #+end_src
 *** Basic
 #+NAME: basic-keybinds
-| key bind     | command    | description                   |
-|--------------+------------+-------------------------------|
-| $mod+Return  | exec $term | Start terminal emulator       |
-| $mod+Shift+q | kill       | Kill focused window           |
-| $mod+d       | exec $menu | Start launcher                |
-| $mod+Shift+c | reload     | Reload the configuration file |
+| key bind          | command       | description                   |
+|-------------------+---------------+-------------------------------|
+| $mod+Return       | exec $term    | Start terminal emulator       |
+| $mod+Shift+q      | kill          | Kill focused window           |
+| $mod+d            | exec $menu    | Start launcher                |
+| $mod+Shift+c      | reload        | Reload the configuration file |
+| $mod+Ctrl+Shift+l | exec swaylock | Lock the desktop              |
 
 #+begin_src conf-space
 bindsym <<getallkeyvaluepairs(basic-keybinds)>>
