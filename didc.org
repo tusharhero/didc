@@ -57,11 +57,13 @@ babel to automatically copy the backgrounds.
 	  echo "We are done!"
   stow: cp-backgrounds
 	  stow -t ~ -d ${PWD}/home/ .
-  tangle:
+  tangle: tangle.el didc.org
 	  emacs --script tangle.el
-  cp-backgrounds:
+  cp-backgrounds: backgrounds
 	  mkdir -p ${PWD}/home/.local/share/
 	  cp ${PWD}/backgrounds ${PWD}/home/.local/share/backgrounds -r
+  arch-install-deps: archpkglist
+	  pacman -S - < archpkglist
 #+end_src
 * HELPERS
 These are some Emacs lisp noweb blocks which are used to do some
