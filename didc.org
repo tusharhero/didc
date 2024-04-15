@@ -5,11 +5,11 @@
 #+STARTUP: content
 #+PROPERTY: header-args :noweb yes :mkdirp yes
 * TODO
-** TODO Initial configuration
+** DONE Initial configuration
 ** DONE Add most options to org tables
 ** TODO Document everything
 ** TODO Probably use GNU stew or something
-** TODO Better org tangling game
+** DONE Better org tangling game
 * LICENSE NOTICE
   :PROPERTIES:
   :VISIBILITY: folded
@@ -31,6 +31,8 @@
   You should have received a copy of the GNU General Public License
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 * HELPERS
+These are some Emacs lisp noweb blocks which are used to do some
+literate configuration magic through out this document.
 #+NAME: default
 |-|
 #+name: getvar
@@ -42,7 +44,10 @@
 (mapconcat (lambda (key) (format "%s %s" (car key) (cadr key))) table "\n")
 #+end_src
 * WINDOW MANAGER
+I am currently using [[https://swaywm.org/][Sway]].
 ** Configuration skeleton
+It is just that, a /skeleton/, I just put some things which need to be
+at the top here.
 #+begin_src conf-space :tangle config/sway/config
 <<set-pref-prog>>
 
@@ -78,10 +83,10 @@ output * bg  ~/.local/share/backgrounds/man-standing-infront-of-light.jpeg fill
  gaps inner 10
 #+end_src
 ** Status bar
-:PROPERTIES:
-:header-args: :noweb-ref statusbar :noweb yes
-:END:
-#+begin_src conf-space
+This is the configuration for the status bar, the thing is shown at
+the top of the screen, I have kept it very simple, currently I use
+=swaybar= which is pretty bare bones. This might change in the future though.
+#+begin_src conf-space :noweb-ref statusbar
 position top
 mode dock
 status_command while date +'%Y-%m-%d Q-%q %a %H:%M:%S' ; do sleep 1; done
@@ -95,13 +100,26 @@ colors {
 | variable | value | Description       |
 |----------+-------+-------------------|
 | $term    | foot  | Terminal emulator |
+Currently I have only set the terminal emulator here, but I add some other
+programs here in the future.
 #+begin_src conf-space :noweb-ref set-pref-prog
 set <<getallkeyvaluepairs(pref-programs)>>
 #+end_src
 * MENU
+I use [[https://git.sr.ht/~adnano/wmenu/][Wmenu]] as the menu/command launcher whatever you call it. 
 #+begin_src conf-space :noweb-ref set-pref-prog
 set $menu "~/.local/bin/didc_wmenu_run"
 #+end_src
+
+I have this custom script here because I don't like how the default
+=wmenu_run= script works. Particularly, you can't type an arbitrary
+command in there, you have to select any of the binaries from the menu
+that comes up. This is very inconvenient for me since I do have to
+give some arguments or run a piped command to start some program from
+the menu, for example starting =emacsclient= is impossible to do with
+the default =wmenu_run= script.
+
+This =didc_wmenu_run= script is adapted from [[https://git.sr.ht/~adnano/wmenu/tree/master/item/wmenu_run][the default wmenu script]].
 #+begin_src sh :tangle .local/bin/didc_wmenu_run :shebang #!/bin/sh
   cachedir="${XDG_CACHE_HOME:-"$HOME/.cache"}"
   cache="$cachedir/wmenu_run"
@@ -186,6 +204,9 @@ is pretty useful for Evil(Vim).
 :PROPERTIES:
 :header-args: :tangle config/sway/config :noweb yes
 :END:
+I have taken a peculiar approach, going with one of the [[TODO]] that
+I had, I have used tables to set the keybindings. This uses a little
+bit of Emacs lisp and noweb references to achieve this.
 *** Set keys
 #+name: set-keys
 | variable | value | description                                                |
@@ -220,7 +241,7 @@ left mouse button for resizing and right mouse button for dragging.
 floating_modifier $mod normal
 #+end_src
 
-Exit sway (logs you out of your Wayland session).
+This exits sway (logs you out of your Wayland session).
 #+begin_src conf-space
 bindsym $mod+Shift+e exec swaynag -t warning -m 'You pressed the exit shortcut. Do you really want to exit sway? This will end your Wayland session.' -B 'Yes, exit sway' 'swaymsg exit'
 #+end_src
@@ -248,6 +269,8 @@ bindsym $mod+Shift+e exec swaynag -t warning -m 'You pressed the exit shortcut. 
 bindsym <<getallkeyvaluepairs(move-keybinds)>>
 #+end_src
 *** Workspaces
+The noweb shenanigans here are a bit more complicated, that is so
+because I don't want to repeat the name of workspaces again and again.
 #+name: workspace-config-gen
 #+begin_src elisp :var format=switch-workspace-format :wrap src conf-space :tangle no
 (mapconcat (lambda (keybind) (format format keybind keybind) ) '(1 2 3 4 5 6 7 8 9 0))
@@ -323,6 +346,8 @@ bindsym <<getallkeyvaluepairs(scratchpad-keybinds)>>
 |-----------+------------|
 | font-name | Iosevka NF |
 | font-size | 14         |
+I set the fonts for everything here, just update this and everything
+else is updated.
 ** Terminal emulator
 #+begin_src conf-unix :tangle config/foot/foot.ini  :noweb-prefix no
   [main]
@@ -347,6 +372,8 @@ bindsym <<getallkeyvaluepairs(scratchpad-keybinds)>>
 | background | "000000" |
 | foreground | "ffffff" |
 | alpha      | 0.65     |
+I set the colors for everything here, although sections may have their
+own table for some custom colors.
 ** Terminal emulator
 #+begin_src conf-unix :tangle config/foot/foot.ini
   [colors]
@@ -370,7 +397,6 @@ inactive_workspace #<<getvar(table=statusbar-inactive-colors,variable="border")>
 #+begin_src conf-unix :tangle config/swaylock/config
 color=<<getvar(table=basic-colors,variable="background")>>
 #+end_src
-
 ** Menu
 #+begin_src shell :noweb-ref menu-colors
 -N <<getvar(table=basic-colors,variable="background")>>
