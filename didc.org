@@ -8,7 +8,7 @@
 ** DONE Initial configuration
 ** DONE Add most options to org tables
 ** TODO Document everything
-** TODO Probably use GNU stew or something
+** TODO Probably use GNU stow or something
 ** DONE Better org tangling game
 * LICENSE NOTICE
   :PROPERTIES:
@@ -30,6 +30,39 @@
 
   You should have received a copy of the GNU General Public License
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
+* CONFIGURATION MANAGEMENT
+Just some scripts to help out with managing the configuration on the system.
+** Tangling Emacs lisp script
+This creates the actual directory structure from this org-document(AKA
+tangling).
+#+begin_src elisp :tangle tangle.el :shebang #!/usr/bin/emacs --script
+  ;; Run this script to `tangle' DIDC from `didc.org', of
+  ;; course the only requirement it has is Emacs is itself.
+  (message "Loading Org...")
+  (require 'org)
+  (message "Tangling didc.org...")
+  (setq org-confirm-babel-evaluate nil)
+  (org-babel-tangle-file "didc.org")
+  (message "didc has been tangled!")
+#+end_src
+** make file
+:TODO:
+- do the =cp-background= step within Emacs lisp.
+:END:
+I use [[https://gnu.org/software/stow][GNU Stow]] to automatically sym link everything to the correct
+place. The =cp-backgrounds= step is necessary because I can't use org
+babel to automatically copy the backgrounds.
+#+begin_src makefile :tangle Makefile
+  install: tangle stow
+	  echo "We are done!"
+  stow: cp-backgrounds
+	  stow -t ~ -d ${PWD}/home/ .
+  tangle:
+	  emacs --script tangle.el
+  cp-backgrounds:
+	  mkdir -p ${PWD}/home/.local/share/
+	  cp ${PWD}/backgrounds ${PWD}/home/.local/share/backgrounds -r
+#+end_src
 * HELPERS
 These are some Emacs lisp noweb blocks which are used to do some
 literate configuration magic through out this document.
@@ -48,7 +81,7 @@ I am currently using [[https://swaywm.org/][Sway]].
 ** Configuration skeleton
 It is just that, a /skeleton/, I just put some things which need to be
 at the top here.
-#+begin_src conf-space :tangle config/sway/config
+#+begin_src conf-space :tangle home/.config/sway/config
 <<set-pref-prog>>
 
 bar {
@@ -67,7 +100,7 @@ computer goes to sleep.
 |-----------+-------+---------------------------------|
 | lock      |   300 | Seconds to wait before locking  |
 | sleep     |   600 | Seconds to wait before sleeping |
-#+begin_src conf-space :tangle config/sway/config
+#+begin_src conf-space :tangle home/.config/sway/config
 exec swayidle -w \
          timeout <<getvar(idle-config,"lock")>> 'swaylock -f -c 000000' \
          timeout <<getvar(idle-config,"sleep")>> 'swaymsg "output * power off"' resume 'swaymsg "output * power on"' \
@@ -75,11 +108,11 @@ exec swayidle -w \
 #+end_src
 ** Background
 The wallpapers are stored in backgrounds, they need to be in =~/.local/share/backgrounds/=.
-#+begin_src conf-space :tangle config/sway/config
+#+begin_src conf-space :tangle home/.config/sway/config
 output * bg  ~/.local/share/backgrounds/man-standing-infront-of-light.jpeg fill
 #+end_src
 ** Gaps
-#+begin_src conf-space :tangle config/sway/config
+#+begin_src conf-space :tangle home/.config/sway/config
  gaps inner 10
 #+end_src
 ** Status bar
@@ -120,7 +153,7 @@ the menu, for example starting =emacsclient= is impossible to do with
 the default =wmenu_run= script.
 
 This =didc_wmenu_run= script is adapted from [[https://git.sr.ht/~adnano/wmenu/tree/master/item/wmenu_run][the default wmenu script]].
-#+begin_src sh :tangle .local/bin/didc_wmenu_run :shebang #!/bin/sh
+#+begin_src sh :tangle home/.local/bin/didc_wmenu_run :shebang #!/bin/sh
   cachedir="${XDG_CACHE_HOME:-"$HOME/.cache"}"
   cache="$cachedir/wmenu_run"
 
@@ -158,7 +191,7 @@ This =didc_wmenu_run= script is adapted from [[https://git.sr.ht/~adnano/wmenu/t
 * TERMINAL
 Because most programs don't recognize =foot= anyway, I changed it to
 to =xterm-256color=.
-#+begin_src conf-unix :tangle config/foot/foot.ini
+#+begin_src conf-unix :tangle home/.config/foot/foot.ini
   [main]
   term=xterm-256color
 #+end_src
@@ -169,7 +202,7 @@ to =xterm-256color=.
 :END:
 [[https://github.com/kmonad/kmonad][Kmonad]] allows me to change the ~CAPSLOCK~ key to an ~ESC~ key, which
 is pretty useful for Evil(Vim).
-#+begin_src lisp :tangle config/kmonad/default.kbd
+#+begin_src lisp :tangle home/.config/kmonad/default.kbd
   (defcfg
       input  (device-file "/dev/input/by-id/usb-413c_Dell_KB216_Wired_Keyboard-event-kbd")
     output (uinput-sink "DIDC Kmonad output")
@@ -202,7 +235,7 @@ is pretty useful for Evil(Vim).
 #+end_src
 ** Window manager
 :PROPERTIES:
-:header-args: :tangle config/sway/config :noweb yes
+:header-args: :tangle home/.config/sway/config :noweb yes
 :END:
 I have taken a peculiar approach, going with one of the [[TODO]] that
 I had, I have used tables to set the keybindings. This uses a little
@@ -349,14 +382,14 @@ bindsym <<getallkeyvaluepairs(scratchpad-keybinds)>>
 I set the fonts for everything here, just update this and everything
 else is updated.
 ** Terminal emulator
-#+begin_src conf-unix :tangle config/foot/foot.ini  :noweb-prefix no
+#+begin_src conf-unix :tangle home/.config/foot/foot.ini  :noweb-prefix no
   [main]
   font=<<getvar(table=font-settings,variable="font-name")>>:size=<<getvar(table=font-settings,variable="font-size")>>
   dpi-aware=yes
 #+end_src
 ** Window manager
 #+name: Font
-#+begin_src conf-space  :tangle config/sway/config
+#+begin_src conf-space  :tangle home/.config/sway/config
   font '<<getvar(table=font-settings,variable="font-name")>>' <<getvar(table=font-settings,variable="font-size")>>
 #+end_src
 ** Menu
@@ -375,7 +408,7 @@ else is updated.
 I set the colors for everything here, although sections may have their
 own table for some custom colors.
 ** Terminal emulator
-#+begin_src conf-unix :tangle config/foot/foot.ini
+#+begin_src conf-unix :tangle home/.config/foot/foot.ini
   [colors]
   background=<<getvar(table=basic-colors,variable="background")>>
   foreground=<<getvar(table=basic-colors,variable="foreground")>>
@@ -394,7 +427,7 @@ separator #<<getvar(table=basic-colors,variable="foreground")>>
 inactive_workspace #<<getvar(table=statusbar-inactive-colors,variable="border")>> #<<getvar(table=basic-colors,variable="background")>> #<<getvar(table=statusbar-inactive-colors,variable="inactive-text")>>
 #+end_src
 ** Lock screen
-#+begin_src conf-unix :tangle config/swaylock/config
+#+begin_src conf-unix :tangle home/.config/swaylock/config
 color=<<getvar(table=basic-colors,variable="background")>>
 #+end_src
 ** Menu
