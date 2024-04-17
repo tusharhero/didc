@@ -465,9 +465,9 @@ because I don't want to repeat the name of workspaces again and again.
     exec echo 1 > $workroomTmpFile
 
     # Switch workroom
-    bindsym Alt+Shift+q exec "~/.local/bin/sway_workroom -s 1"
-    bindsym Alt+Shift+w exec "~/.local/bin/sway_workroom -s 2"
-    bindsym Alt+Shift+e exec "~/.local/bin/sway_workroom -s 3"
+    bindsym Alt+Shift+q exec "~/.local/bin/sway_workroom -s q"
+    bindsym Alt+Shift+w exec "~/.local/bin/sway_workroom -s w"
+    bindsym Alt+Shift+e exec "~/.local/bin/sway_workroom -s e"
     # You can add more workrooms as below
     #bindsym Alt+Shift+r exec "~/.local/bin/sway_workroom -s r"
     #bindsym Alt+Shift+t exec "~/.local/bin/sway_workroom -s t"
