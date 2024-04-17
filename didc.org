@@ -154,7 +154,6 @@ the top of the screen, I have kept it very simple, currently I use
   colors {
   <<statusbar-colors>>
   }
-  <<disable-scrolling>>
 #+end_src
 ** Workroom
 This script is taken from this [[https://github.com/IceAsteroid/swayWorkroom.sh][repository]].
@@ -499,15 +498,6 @@ because I don't want to repeat the name of workspaces again and again.
     bindsym $mod+Shift+8 exec "~/.local/bin/sway_workroom -x --to8"
     bindsym $mod+Shift+9 exec "~/.local/bin/sway_workroom -x --to9"
     bindsym $mod+Shift+0 exec "~/.local/bin/sway_workroom -x --to0"
-#+end_src
-**** disable scrolling for workspaces
-#+begin_src conf-space :noweb-ref disable-scrolling :tangle no
-  # diable vertical scrolling
-  bindsym button4 nop
-  bindsym button5 nop
-  # diable horizontal scrolling
-  bindsym button6 nop
-  bindsym button7 nop
 #+end_src
 *** Layout
 #+NAME: layout-keybinds
