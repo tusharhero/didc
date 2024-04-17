@@ -147,13 +147,102 @@ This is the configuration for the status bar, the thing is shown at
 the top of the screen, I have kept it very simple, currently I use
 =swaybar= which is pretty bare bones. This might change in the future though.
 #+begin_src conf-space :noweb-ref statusbar
-position top
-mode dock
-status_command while date +'%Y-%m-%d Q-%q %a %H:%M:%S' ; do sleep 1; done
-height 0
-colors {
-   <<statusbar-colors>>
+  position top
+  mode dock
+  status_command while date +'%Y-%m-%d Q-%q %a %H:%M:%S' ; do sleep 1; done
+  height 0
+  colors {
+  <<statusbar-colors>>
+  }
+  <<disable-scrolling>>
+#+end_src
+** Workroom
+This script is taken from this [[https://github.com/IceAsteroid/swayWorkroom.sh][repository]].
+#+begin_src sh :shebang #!/bin/bash :tangle home/.local/bin/sway_workroom
+swayScriptsTmpDir="/tmp/swayScriptsTmpDir"
+[ -d "${swayScriptsTmpDir}" ] || { mkdir ${swayScriptsTmpDir}; chmod 770 ${swayScriptsTmpDir}; }
+
+workroomSwitchedFile="${swayScriptsTmpDir}/swayWorkroomSwitched.txt"
+[ -f "${workroomSwitchedFile}" ] || { touch ${workroomSwitchedFile}; chmod 660 ${workroomSwitchedFile}; }
+# Initiate to workrrom 1 if no previous one is stored in file.
+[ -s "${workroomSwitchedFile}" ] || echo "1" > ${workroomSwitchedFile}
+
+workroomWorkspaceSwitchedFile="${swayScriptsTmpDir}/swayWorkroomWorkspaceSwitched.txt"
+[ -f "${workroomWorkspaceSwitchedFile}" ] || { touch ${workroomWorkspaceSwitchedFile}; chmod 660 ${workroomWorkspaceSwitchedFile}; }
+
+workspaceToSwitch="$(cat ${workroomWorkspaceSwitchedFile})"
+
+printUsage_() {
+  cat <<EOF
+Usage:
+  $(echo $(basename "$0")) [OPTION]
+  -s <N>|<M> Switch to workroom number N or named M
+  -x N       Navigate to workspace N in current workroom
+  -x --toN   Move focused container to workspace N
+EOF
 }
+
+case ${1} in
+  -x) workroomToSwitch="$(cat ${workroomSwitchedFile})";;
+  -s) echo "${2}" > ${workroomSwitchedFile}
+      workroomToSwitch="$(cat ${workroomSwitchedFile})"
+      swaymsg "workspace ${workroomToSwitch}${workspaceToSwitch}";;
+  *) printUsage_; exit;;
+esac
+
+if [[ "${1}" == -x ]] && [[ "${2}" != 0 ]]; then
+  case ${2} in
+    1) swaymsg "workspace ${workroomToSwitch}1";
+       echo "1" > ${workroomWorkspaceSwitchedFile};;
+    2) swaymsg "workspace ${workroomToSwitch}2";
+       echo "2" > ${workroomWorkspaceSwitchedFile};;
+    3) swaymsg "workspace ${workroomToSwitch}3";
+       echo "3" > ${workroomWorkspaceSwitchedFile};;
+    4) swaymsg "workspace ${workroomToSwitch}4";
+       echo "4" > ${workroomWorkspaceSwitchedFile};;
+    5) swaymsg "workspace ${workroomToSwitch}5";
+       echo "5" > ${workroomWorkspaceSwitchedFile};;
+    6) swaymsg "workspace ${workroomToSwitch}6";
+       echo "6" > ${workroomWorkspaceSwitchedFile};;
+    7) swaymsg "workspace ${workroomToSwitch}7";
+       echo "7" > ${workroomWorkspaceSwitchedFile};;
+    8) swaymsg "workspace ${workroomToSwitch}8";
+       echo "8" > ${workroomWorkspaceSwitchedFile};;
+    9) swaymsg "workspace ${workroomToSwitch}9";
+       echo "9" > ${workroomWorkspaceSwitchedFile};;
+    --to1) swaymsg "move container to workspace ${workroomToSwitch}1";;
+    --to2) swaymsg "move container to workspace ${workroomToSwitch}2";;
+    --to3) swaymsg "move container to workspace ${workroomToSwitch}3";;
+    --to4) swaymsg "move container to workspace ${workroomToSwitch}4";;
+    --to5) swaymsg "move container to workspace ${workroomToSwitch}5";;
+    --to6) swaymsg "move container to workspace ${workroomToSwitch}6";;
+    --to7) swaymsg "move container to workspace ${workroomToSwitch}7";;
+    --to8) swaymsg "move container to workspace ${workroomToSwitch}8";;
+    --to9) swaymsg "move container to workspace ${workroomToSwitch}9";;
+    --to0) [[ "${workroomToSwitch}" =~ ^[0-9]+$ ]] \
+             && swaymsg "move container to workspace $((${workroomToSwitch} + 1))0" \
+             || swaymsg "move container to workspace ${workroomToSwitch}0";;
+  esac
+else
+  #workspaceToSwitch="$(cat ${workroomWorkspaceSwitchedFile})"
+  if [[ "${2}" == 0 ]]; then
+    if [[ "${workroomToSwitch}" =~ ^[0-9]+$ ]]; then
+      swaymsg "workspace $((${workroomToSwitch} + 1))0"; echo "0" > ${workroomWorkspaceSwitchedFile}
+    else
+      swaymsg "workspace ${workroomToSwitch}0"; echo "0" > ${workroomWorkspaceSwitchedFile}
+    fi
+  else
+    if [ "${workspaceToSwitch}" = 0 ]; then
+      if [[ "${workroomToSwitch}" =~ ^[0-9]+$ ]]; then
+        swaymsg "workspace $((${workroomToSwitch} + 1))0"; echo "0" > ${workroomWorkspaceSwitchedFile}
+      else
+        swaymsg "workspace ${workroomToSwitch}0"; echo "0" > ${workroomWorkspaceSwitchedFile}
+      fi
+    else
+      swaymsg "workspace ${workroomToSwitch}${workspaceToSwitch}"
+    fi
+  fi
+fi
 #+end_src
 ** Preferred Programs
 #+NAME: pref-programs
@@ -352,7 +441,7 @@ because I don't want to repeat the name of workspaces again and again.
 #+begin_src elisp :var format=switch-workspace-format :wrap src conf-space :tangle no
 (mapconcat (lambda (keybind) (format format keybind keybind) ) '(1 2 3 4 5 6 7 8 9 0))
 #+end_src
-**** Switch Workspaces keybinds
+**** COMMENT Switch Workspaces keybinds
 #+name: switch-workspace-format
 #+begin_example format
   bindsym $mod+%d workspace number %d
@@ -360,13 +449,65 @@ because I don't want to repeat the name of workspaces again and again.
 #+begin_src conf-space
 <<workspace-config-gen(switch-workspace-format)>>
 #+end_src
-**** Move focused container to workspace
+**** COMMENT Move focused container to workspace
 #+name: move-focused-workspace-format
 #+begin_example format
   bindsym $mod+Shift+%d move container to workspace number %d
 #+end_example
 #+begin_src conf-space
 <<workspace-config-gen(move-focused-workspace-format)>>
+#+end_src
+**** workrooms
+#+begin_src conf-space
+## Workroom implementaton:
+    # Reset workroom to 1
+    # , for workspace N0, as this workspace's number is set from a file and + 1 to it.
+    # This is to prevent loading N0 when restarting sway from tty, while the file's been written by the "swayWorkroom.sh" script.
+    set $swayScriptsTmpDir "/tmp/swayScriptsTmpDir"
+    set $workroomTmpFile $swayScriptsTmpDir/swayWorkroomSwitched.txt
+    exec echo 1 > $workroomTmpFile
+
+    # Switch workroom
+    bindsym Alt+Shift+q exec "~/.local/bin/sway_workroom -s 1"
+    bindsym Alt+Shift+w exec "~/.local/bin/sway_workroom -s 2"
+    bindsym Alt+Shift+e exec "~/.local/bin/sway_workroom -s 3"
+    # You can add more workrooms as below
+    #bindsym Alt+Shift+r exec "~/.local/bin/sway_workroom -s r"
+    #bindsym Alt+Shift+t exec "~/.local/bin/sway_workroom -s t"
+
+    # Navigate
+    bindsym $mod+Escape exec "~/.local/bin/sway_workroom -x 1"
+    bindsym $mod+1 exec "~/.local/bin/sway_workroom -x 1"
+    bindsym $mod+2 exec "~/.local/bin/sway_workroom -x 2"
+    bindsym $mod+3 exec "~/.local/bin/sway_workroom -x 3"
+    bindsym $mod+4 exec "~/.local/bin/sway_workroom -x 4"
+    bindsym $mod+5 exec "~/.local/bin/sway_workroom -x 5"
+    bindsym $mod+6 exec "~/.local/bin/sway_workroom -x 6"
+    bindsym $mod+7 exec "~/.local/bin/sway_workroom -x 7"
+    bindsym $mod+8 exec "~/.local/bin/sway_workroom -x 8"
+    bindsym $mod+9 exec "~/.local/bin/sway_workroom -x 9"
+    bindsym $mod+0 exec "~/.local/bin/sway_workroom -x 0"
+
+    # Move focused container to workspace
+    bindsym $mod+Shift+1 exec "~/.local/bin/sway_workroom -x --to1"
+    bindsym $mod+Shift+2 exec "~/.local/bin/sway_workroom -x --to2"
+    bindsym $mod+Shift+3 exec "~/.local/bin/sway_workroom -x --to3"
+    bindsym $mod+Shift+4 exec "~/.local/bin/sway_workroom -x --to4"
+    bindsym $mod+Shift+5 exec "~/.local/bin/sway_workroom -x --to5"
+    bindsym $mod+Shift+6 exec "~/.local/bin/sway_workroom -x --to6"
+    bindsym $mod+Shift+7 exec "~/.local/bin/sway_workroom -x --to7"
+    bindsym $mod+Shift+8 exec "~/.local/bin/sway_workroom -x --to8"
+    bindsym $mod+Shift+9 exec "~/.local/bin/sway_workroom -x --to9"
+    bindsym $mod+Shift+0 exec "~/.local/bin/sway_workroom -x --to0"
+#+end_src
+**** disable scrolling for workspaces
+#+begin_src conf-space :noweb-ref disable-scrolling :tangle no
+  # diable vertical scrolling
+  bindsym button4 nop
+  bindsym button5 nop
+  # diable horizontal scrolling
+  bindsym button6 nop
+  bindsym button7 nop
 #+end_src
 *** Layout
 #+NAME: layout-keybinds
