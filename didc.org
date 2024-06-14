@@ -360,7 +360,7 @@ because I don't want to repeat the name of workspaces again and again.
 #+begin_src conf-space
 <<workspace-config-gen(switch-workspace-format)>>
 #+end_src
-**** COMMENT Move focused container to workspace
+**** Move focused container to workspace
 #+name: move-focused-workspace-format
 #+begin_example format
   bindsym $mod+Shift+%d move container to workspace number %d
