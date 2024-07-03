@@ -215,6 +215,13 @@ This =didc_wmenu_run= script is adapted from [[https://git.sr.ht/~adnano/wmenu/t
 
   path | wmenu <<menu-font>> <<menu-colors>> -l 4 | xargs -0 sh -c
 #+end_src
+
+And, a script to delete the cached list to force it to reload the items.
+#+begin_src sh :tangle home/.local/bin/wmenu_reload :shebang #!/bin/sh
+  cachedir="${XDG_CACHE_HOME:-"$HOME/.cache"}"
+  cache="$cachedir/wmenu_run"
+  rm $cache
+#+end_src
 * TERMINAL
 Because most programs don't recognize =foot= anyway, I changed it to
 to =xterm-256color=.
