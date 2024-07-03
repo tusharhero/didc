@@ -213,7 +213,11 @@ This =didc_wmenu_run= script is adapted from [[https://git.sr.ht/~adnano/wmenu/t
       fi
   }
 
-  path | wmenu <<menu-font>> <<menu-colors>> -l 4 | xargs -0 sh -c
+  path_direct() {
+      bins | sort -u
+  }
+
+  path_direct | wmenu <<menu-font>> <<menu-colors>> -l 4 | xargs -0 sh -c
 #+end_src
 
 And, a script to delete the cached list to force it to reload the items.
