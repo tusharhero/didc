@@ -83,17 +83,19 @@ So, we have this table to document all the packages that are needed
 for this configuration to work. Currently, I will only document the
 names of the Arch Linux packages.
 #+name: packages
-| package           | archlinux          | description                                                   |
-|-------------------+--------------------+---------------------------------------------------------------|
-| Sway              | =sway=             | The Wayland compositing window manager                        |
-| Swaybg            | =swaybg=           | Wallpaper tool for Wayland compositors                        |
-| Swaylock          | =swaylock=         | Screen locker for Wayland                                     |
-| Foot              | =foot=             | Fast, lightweight, and minimalistic Wayland terminal emulator |
-| GNU Emacs         | =emacs-wayland=    | Emacs, it is used to detangle this package                    |
-| GNU Stow          | =stow=             | It is used to sym link the configuration to correct places    |
-| Iosevka Nerd font | =ttf-iosevka-nerd= | Default font used in our configuration                        |
-| Wmenu             | =wmenu=            | Menu/Application launcher                                     |
-| Kmonad            | =kmonad=           | Used for keyboard configuration                               |
+| package           | archlinux          | description                                                                  |
+|-------------------+--------------------+------------------------------------------------------------------------------|
+| Sway              | =sway=             | The Wayland compositing window manager                                       |
+| Swaybg            | =swaybg=           | Wallpaper tool for Wayland compositors                                       |
+| Swaylock          | =swaylock=         | Screen locker for Wayland                                                    |
+| Foot              | =foot=             | Fast, lightweight, and minimalistic Wayland terminal emulator                |
+| GNU Emacs         | =emacs-wayland=    | Emacs, it is used to detangle this package                                   |
+| GNU Stow          | =stow=             | It is used to sym link the configuration to correct places                   |
+| Iosevka Nerd font | =ttf-iosevka-nerd= | Default font used in our configuration                                       |
+| Wmenu             | =wmenu=            | Menu/Application launcher                                                    |
+| Grim              | =grim=             | Grab images from a Wayland compositor                                        |
+| Slurp             | =slurp=            | Select a region in a Wayland compositor and print it to the standard output. |
+| Kmonad            | =kmonad=           | Used for keyboard configuration                                              |
 
 #+name: getpkglist
 #+begin_src elisp :var table=packages n=1 :tangle no
@@ -164,6 +166,12 @@ Currently I have only set the terminal emulator here, but I add some other
 programs here in the future.
 #+begin_src conf-space :noweb-ref set-pref-prog
 set <<getallkeyvaluepairs(pref-programs)>>
+#+end_src
+* SCREENSHOT
+I want to take screenshots peacefully.
+#+begin_src sh :tangle home/.local/bin/screenshot :shebang #!/bin/sh
+  mkdir -p "$HOME/Pictures/screenshots/"
+  grim -g "$(slurp)" "$HOME/Pictures/screenshots/$(date +'%s_grim.png')"
 #+end_src
 * MENU
 I use [[https://git.sr.ht/~adnano/wmenu/][Wmenu]] as the menu/command launcher whatever you call it. 

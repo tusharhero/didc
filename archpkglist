@@ -6,4 +6,6 @@ emacs-wayland
 stow
 ttf-iosevka-nerd
 wmenu
+grim
+slurp
 kmonad
