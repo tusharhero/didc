@@ -95,6 +95,7 @@ names of the Arch Linux packages.
 | Wmenu             | =wmenu=            | Menu/Application launcher                                                    |
 | Grim              | =grim=             | Grab images from a Wayland compositor                                        |
 | Slurp             | =slurp=            | Select a region in a Wayland compositor and print it to the standard output. |
+| Wf-recorder       | =wf-recorder=      | Utility program for screen recording                                         |
 | Kmonad            | =kmonad=           | Used for keyboard configuration                                              |
 
 #+name: getpkglist
@@ -167,11 +168,25 @@ programs here in the future.
 #+begin_src conf-space :noweb-ref set-pref-prog
 set <<getallkeyvaluepairs(pref-programs)>>
 #+end_src
-* SCREENSHOT
+* SCREEN CAPTURE
+For all the screen capturing shenanigans.
+** Screenshot
 I want to take screenshots peacefully.
 #+begin_src sh :tangle home/.local/bin/screenshot :shebang #!/bin/sh
   mkdir -p "$HOME/Pictures/screenshots/"
-  grim -g "$(slurp)" "$HOME/Pictures/screenshots/$(date +'%s_grim.png')"
+  grim -g "$(slurp)" "$HOME/Pictures/screenshots/$(date +'%s_screenshot.png')"
+#+end_src
+** Screen Recording
+And sometimes, I would like to record videos too.
+#+begin_src sh :tangle home/.local/bin/screenrecord :shebang #!/bin/sh
+  mode="$1"
+  case $mode in
+      start )
+          mkdir -p "$HOME/Videos/screenrecordings/"
+          wf-recorder -g "$(slurp)" -f "$HOME/Videos/screenrecordings/$(date +'%s_screenrecording.mp4')"
+          ;;
+      stop ) pkill --signal SIGINT wf-recorder ;;
+  esac
 #+end_src
 * MENU
 I use [[https://git.sr.ht/~adnano/wmenu/][Wmenu]] as the menu/command launcher whatever you call it. 
