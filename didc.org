@@ -442,8 +442,8 @@ bindsym <<getallkeyvaluepairs(scratchpad-keybinds)>>
 | $mod+Down   | resize grow height 10px   |                                           |
 | $mod+Up     | resize shrink height 10px |                                           |
 | $mod+Right  | resize grow width 10px    |                                           |
-| Return      | mode "Default"            |                                           |
-| Escape      | mode "Default"            | Return to default mode                    |
+| Return      | mode "default"            |                                           |
+| Escape      | mode "default"            | Return to default mode                    |
 #+begin_src conf-space
   mode "resize" {
        bindsym <<getallkeyvaluepairs(resizing-containers-keybinds)>>
