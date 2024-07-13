@@ -1,4 +1,4 @@
-# -*- after-save-hook: (org-babel-tangle); org-confirm-babel-evaluate: nil; -*-
+# -*- org-confirm-babel-evaluate: nil; after-save-hook: (lambda nil (async-shell-command "make")); -*-
 #+TITLE: DIDC Is Desktop Configuration
 #+AUTHOR: tusharhero
 #+EMAIL: tusharhero@sdf.org
