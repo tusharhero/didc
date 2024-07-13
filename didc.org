@@ -141,10 +141,6 @@ The wallpapers are stored in backgrounds, they need to be in =~/.local/share/bac
 #+begin_src conf-space :tangle home/.config/sway/config
 output * bg  ~/.local/share/backgrounds/man-standing-infront-of-light.jpeg fill
 #+end_src
-** Gaps
-#+begin_src conf-space :tangle home/.config/sway/config
- gaps inner 10
-#+end_src
 ** Status bar
 This is the configuration for the status bar, the thing is shown at
 the top of the screen, I have kept it very simple, currently I use
