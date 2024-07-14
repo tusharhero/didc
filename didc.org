@@ -371,6 +371,20 @@ This exits sway (logs you out of your Wayland session).
 #+begin_src conf-space :noweb yes
   bindsym $mod+Shift+e exec swaynag -m "Exit commands" <<get-exit-arg-commands()>>
 #+end_src
+*** Favorite programs
+#+NAME: fav-programs
+| shortcut | program               | description   |
+|----------+-----------------------+---------------|
+| e        | emacsclient -nc -a '' | Start emacs   |
+| f        | chromium              | Start browser |
+
+#+name: get-fav-keybinds
+#+begin_src elisp :var table=default :tangle no :wrap src conf-space
+(mapconcat (lambda (key) (format "bindsym $mod+a+%s exec %s &" (car key) (cadr key))) table "\n")
+#+end_src
+#+begin_src conf-space
+<<get-fav-keybinds(fav-programs)>>
+#+end_src
 *** Moving around
 #+NAME: move-keybinds
 | key bind          | command     | description             |
