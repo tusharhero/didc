@@ -139,7 +139,7 @@ exec swayidle -w \
 ** Background
 The wallpapers are stored in backgrounds, they need to be in =~/.local/share/backgrounds/=.
 #+begin_src conf-space :tangle home/.config/sway/config
-output * bg  ~/.local/share/backgrounds/man-standing-infront-of-light.jpeg fill
+output * bg  ~/.local/share/backgrounds/the_star_and_stars.png fill
 #+end_src
 ** Status bar
 This is the configuration for the status bar, the thing is shown at
