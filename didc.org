@@ -443,7 +443,7 @@ because I don't want to repeat the name of workspaces again and again.
 | $mod+f           | fullscreen          | Make the current focus full screen                        |
 | $mod+Shift+space | floating toggle     | Toggle the current focus between tiling and floating mode |
 | $mod+space       | focus mode_toggle   | Swap focus between the tiling area and the floating area  |
-| $mod+a           | focus parent        | Move focus to the parent container                        |
+| $mod+Shift+a     | focus parent        | Move focus to the parent container                        |
 #+begin_src conf-space
 bindsym <<getallkeyvaluepairs(layout-keybinds)>>
 #+end_src
