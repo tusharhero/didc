@@ -275,7 +275,7 @@ is pretty useful for Evil(Vim).
 #+end_src
 
 I will use this Systemd user service to run it at start up. Follow
-this before trying to enable this [[https://github.com/kmonad/kmonad/blob/master/doc/faq.md][guide]] service though.
+this [[https://github.com/kmonad/kmonad/blob/master/doc/faq.md][guide]], before trying to enable this service though.
 #+begin_src conf-toml :tangle home/.config/systemd/user/kmonad.service
 [Unit]
 Description=kmonad keyboard config
