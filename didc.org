@@ -83,8 +83,8 @@ So, we have this table to document all the packages that are needed
 for this configuration to work. Currently, I will only document the
 names of the Arch Linux packages.
 #+name: packages
-| package           | archlinux          | description                                                                  |
-|-------------------+--------------------+------------------------------------------------------------------------------|
+| package           | archlinux        | description                                                                  |
+|-------------------+------------------+------------------------------------------------------------------------------|
 | Sway              | =sway=             | The Wayland compositing window manager                                       |
 | Swaybg            | =swaybg=           | Wallpaper tool for Wayland compositors                                       |
 | Swaylock          | =swaylock=         | Screen locker for Wayland                                                    |
@@ -148,11 +148,28 @@ the top of the screen, I have kept it very simple, currently I use
 #+begin_src conf-space :noweb-ref statusbar
   position top
   mode dock
-  status_command while date +'%Y-%m-%d Q-%q %a %H:%M:%S' ; do sleep 1; done
+  status_command "$HOME/.local/bin/didc_status_command"
   height 0
   colors {
   <<statusbar-colors>>
   }
+#+end_src
+
+This is the script that generates text on the status bar.
+#+begin_src sh :tangle home/.local/bin/didc_status_command :shebang #!/bin/sh
+  while true;
+  do
+      date=$(date +'%Y-%m-%d Q-%q %a %H:%M:%S');
+      volume=$(pactl get-sink-volume @DEFAULT_SINK@ | cut -d'/' -f2 | tr -d '% ' | head -n 1);
+      muted=$(pactl get-sink-mute @DEFAULT_SINK@ | cut -d' ' -f 2)
+      volume_symbol="🔊";
+      if [ "$muted" = "yes" ]
+      then
+  	volume_symbol="🔇";
+      fi
+      echo $volume_symbol $volume% $date;
+      sleep 1;
+  done
 #+end_src
 ** Preferred Programs
 #+NAME: pref-programs
@@ -185,7 +202,7 @@ And sometimes, I would like to record videos too.
   esac
 #+end_src
 * MENU
-I use [[https://git.sr.ht/~adnano/wmenu/][Wmenu]] as the menu/command launcher whatever you call it. 
+I use [[https://git.sr.ht/~adnano/wmenu/][Wmenu]] as the menu/command launcher whatever you call it.
 #+begin_src conf-space :noweb-ref set-pref-prog
 set $menu "~/.local/bin/didc_wmenu_run"
 #+end_src
@@ -330,13 +347,16 @@ set <<getallkeyvaluepairs(set-keys)>>
 #+end_src
 *** Basic
 #+NAME: basic-keybinds
-| key bind          | command       | description                   |
-|-------------------+---------------+-------------------------------|
-| $mod+Return       | exec $term    | Start terminal emulator       |
-| $mod+Shift+q      | kill          | Kill focused window           |
-| $mod+d            | exec $menu    | Start launcher                |
-| $mod+Shift+c      | reload        | Reload the configuration file |
-| $mod+Ctrl+Shift+l | exec swaylock | Lock the desktop              |
+| key bind             | command                                        | description                   |
+|----------------------+------------------------------------------------+-------------------------------|
+| $mod+Return          | exec $term                                     | Start terminal emulator       |
+| $mod+Shift+q         | kill                                           | Kill focused window           |
+| $mod+d               | exec $menu                                     | Start launcher                |
+| $mod+Shift+c         | reload                                         | Reload the configuration file |
+| $mod+Ctrl+Shift+l    | exec swaylock                                  | Lock the desktop              |
+| XF86AudioMute        | exec pactl set-sink-mute @DEFAULT_SINK@ toggle | Mute audio                    |
+| XF86AudioRaiseVolume | exec pactl set-sink-volume @DEFAULT_SINK@ +5%  | Increase volume               |
+| XF86AudioLowerVolume | exec pactl set-sink-volume @DEFAULT_SINK@ -5%  | Decrease volume               |
 
 #+begin_src conf-space
 bindsym <<getallkeyvaluepairs(basic-keybinds)>>
