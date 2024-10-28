@@ -347,16 +347,13 @@ set <<getallkeyvaluepairs(set-keys)>>
 #+end_src
 *** Basic
 #+NAME: basic-keybinds
-| key bind             | command                                        | description                   |
-|----------------------+------------------------------------------------+-------------------------------|
-| $mod+Return          | exec $term                                     | Start terminal emulator       |
-| $mod+Shift+q         | kill                                           | Kill focused window           |
-| $mod+d               | exec $menu                                     | Start launcher                |
-| $mod+Shift+c         | reload                                         | Reload the configuration file |
-| $mod+Ctrl+Shift+l    | exec swaylock                                  | Lock the desktop              |
-| XF86AudioMute        | exec pactl set-sink-mute @DEFAULT_SINK@ toggle | Mute audio                    |
-| XF86AudioRaiseVolume | exec pactl set-sink-volume @DEFAULT_SINK@ +5%  | Increase volume               |
-| XF86AudioLowerVolume | exec pactl set-sink-volume @DEFAULT_SINK@ -5%  | Decrease volume               |
+| key bind          | command       | description                   |
+|-------------------+---------------+-------------------------------|
+| $mod+Return       | exec $term    | Start terminal emulator       |
+| $mod+Shift+q      | kill          | Kill focused window           |
+| $mod+d            | exec $menu    | Start launcher                |
+| $mod+Shift+c      | reload        | Reload the configuration file |
+| $mod+Ctrl+Shift+l | exec swaylock | Lock the desktop              |
 
 #+begin_src conf-space
 bindsym <<getallkeyvaluepairs(basic-keybinds)>>
@@ -370,7 +367,28 @@ left mouse button for resizing and right mouse button for dragging.
 floating_modifier $mod normal
 #+end_src
 
-**** Exit
+*** Sound
+#+NAME: volume-keybinds
+| key bind             | command                                        | description     |
+|----------------------+------------------------------------------------+-----------------|
+| XF86AudioMute        | exec pactl set-sink-mute @DEFAULT_SINK@ toggle | Mute audio      |
+| XF86AudioRaiseVolume | exec pactl set-sink-volume @DEFAULT_SINK@ +5%  | Increase volume |
+| XF86AudioLowerVolume | exec pactl set-sink-volume @DEFAULT_SINK@ -5%  | Decrease volume |
+
+#+name: get-volume-keybinds
+#+begin_src elisp :var table=default :tangle no :wrap src conf-space
+  (mapconcat (lambda (key)
+  	     (format
+  	      "bindsym %s %s && paplay /usr/share/sounds/freedesktop/stereo/audio-volume-change.oga"
+  		     (car key) (cadr key)))
+  	   table "\n")
+#+end_src
+
+#+begin_src conf-space
+<<get-volume-keybinds(volume-keybinds)>>
+#+end_src
+
+*** Exit
 This exits sway (logs you out of your Wayland session).
 #+name: exit-commands
 | message            | command               |
