@@ -112,13 +112,22 @@ I am currently using [[https://swaywm.org/][Sway]].
 It is just that, a /skeleton/, I just put some things which need to be
 at the top here.
 #+begin_src conf-space :tangle home/.config/sway/config
-<<set-pref-prog>>
+  <<set-pref-prog>>
 
-bar {
-<<statusbar>>
-}
+  bar {
+   <<statusbar>>
+  }
 
-include /etc/sway/config.d/*
+  include /etc/sway/config.d/*
+#+end_src
+** Basic
+:PROPERTIES:
+:header-args: :tangle home/.config/sway/config
+:END:
+This makes it possible to use Emacs frames and the =C-x 5 o= keybinding
+(Switching frames).
+#+begin_src conf-space :tangle home/.config/sway/config
+focus_on_window_activation focus
 #+end_src
 ** Idle
 This will lock your screen after 300 seconds of inactivity, then turn
