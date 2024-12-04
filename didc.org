@@ -158,9 +158,9 @@ This is the script that generates text on the status bar.
       volume_symbol="";
       if [ "$muted" = "yes" ]
       then
-  	volume_symbol="🔇";
+  	volume_symbol="󰖁 ";
       fi
-      echo $volume_symbol$volume% $date;
+      echo $volume_symbol $volume% $date;
       sleep 1;
   done
 #+end_src
