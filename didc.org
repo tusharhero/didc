@@ -129,22 +129,6 @@ This makes it possible to use Emacs frames and the =C-x 5 o= keybinding
 #+begin_src conf-space :tangle home/.config/sway/config
 focus_on_window_activation focus
 #+end_src
-** Idle
-This will lock your screen after 300 seconds of inactivity, then turn
-off your displays after another 300 seconds, and turn your screens
-back on when resumed. It will also lock your screen before your
-computer goes to sleep.
-#+name:  idle-config
-| parameter | value | description                     |
-|-----------+-------+---------------------------------|
-| lock      |   300 | Seconds to wait before locking  |
-| sleep     |   600 | Seconds to wait before sleeping |
-#+begin_src conf-space :tangle home/.config/sway/config
-exec swayidle -w \
-         timeout <<getvar(idle-config,"lock")>> 'swaylock -f -c 000000' \
-         timeout <<getvar(idle-config,"sleep")>> 'swaymsg "output * power off"' resume 'swaymsg "output * power on"' \
-         before-sleep 'swaylock -f -c 000000'
-#+end_src
 ** Background
 The wallpapers are stored in backgrounds, they need to be in =~/.local/share/backgrounds/=.
 #+begin_src conf-space :tangle home/.config/sway/config
