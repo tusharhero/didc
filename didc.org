@@ -397,24 +397,19 @@ floating_modifier $mod normal
 #+end_src
 
 *** Sound
-#+NAME: volume-keybinds
-| key bind             | command                                        | description     |
-|----------------------+------------------------------------------------+-----------------|
-| XF86AudioMute        | exec pactl set-sink-mute @DEFAULT_SINK@ toggle | Mute audio      |
-| XF86AudioRaiseVolume | exec pactl set-sink-volume @DEFAULT_SINK@ +5%  | Increase volume |
-| XF86AudioLowerVolume | exec pactl set-sink-volume @DEFAULT_SINK@ -5%  | Decrease volume |
-
-#+name: get-volume-keybinds
-#+begin_src elisp :var table=default :tangle no :wrap src conf-space
-  (mapconcat (lambda (key)
-  	     (format
-  	      "bindsym %s %s && paplay /usr/share/sounds/freedesktop/stereo/audio-volume-change.oga"
-  		     (car key) (cadr key)))
-  	   table "\n")
+#+begin_src conf-space
+set $volume_sound paplay /usr/share/sounds/freedesktop/stereo/audio-volume-change.oga
 #+end_src
 
+#+NAME: volume-keybinds
+| key bind             | command                                                                          | description     |
+|----------------------+----------------------------------------------------------------------------------+-----------------|
+| XF86AudioMute        | exec $volume_sound && pactl set-sink-mute @DEFAULT_SINK@ toggle && $volume_sound | Mute audio      |
+| XF86AudioRaiseVolume | exec pactl set-sink-volume @DEFAULT_SINK@ +5% && $volume_sound                   | Increase volume |
+| XF86AudioLowerVolume | exec pactl set-sink-volume @DEFAULT_SINK@ -5% && $volume_sound                   | Decrease volume |
+
 #+begin_src conf-space
-<<get-volume-keybinds(volume-keybinds)>>
+  bindsym <<getallkeyvaluepairs(volume-keybinds)>>
 #+end_src
 
 *** Favorite programs
