@@ -366,10 +366,6 @@ bit of Emacs lisp and noweb references to achieve this.
 | variable | value | description                                                |
 |----------+-------+------------------------------------------------------------|
 | $mod     | Mod4  | Basically, the Meta key (we don't talk about W****** here) |
-| $left    | h     | Just Vi keybindings.                                       |
-| $down    | j     |                                                            |
-| $up      | k     |                                                            |
-| $right   | l     |                                                            |
 #+begin_src conf-space
 set <<getallkeyvaluepairs(set-keys)>>
 #+end_src
@@ -427,24 +423,16 @@ set $volume_sound paplay /usr/share/sounds/freedesktop/stereo/audio-volume-chang
 #+end_src
 *** Moving around
 #+NAME: move-keybinds
-| key bind          | command     | description             |
-|-------------------+-------------+-------------------------|
-| $mod+$left        | focus left  | Move focus              |
-| $mod+$down        | focus down  |                         |
-| $mod+$up          | focus up    |                         |
-| $mod+$right       | focus right |                         |
-| $mod+Left         | focus left  | Move focus (Vi version) |
-| $mod+Down         | focus down  |                         |
-| $mod+Up           | focus up    |                         |
-| $mod+Right        | focus right |                         |
-| $mod+Shift+$left  | move left   | Move focused window     |
-| $mod+Shift+$down  | move down   |                         |
-| $mod+Shift+$up    | move up     |                         |
-| $mod+Shift+$right | move right  |                         |
-| $mod+Shift+Left   | move left   | Move focused window     |
-| $mod+Shift+Down   | move down   |                         |
-| $mod+Shift+Up     | move up     |                         |
-| $mod+Shift+Right  | move right  |                         |
+| key bind         | command       | description         |
+|------------------+---------------+---------------------|
+| $mod+Left        | focus left    | Move focus          |
+| $mod+Down        | focus down    |                     |
+| $mod+Up          | focus up      |                     |
+| $mod+Right       | focus right   |                     |
+| $mod+Shift+Left  | move left  25 | Move focused window |
+| $mod+Shift+Down  | move down  25 |                     |
+| $mod+Shift+Up    | move up    25 |                     |
+| $mod+Shift+Right | move right 25 |                     |
 #+begin_src conf-space
 bindsym <<getallkeyvaluepairs(move-keybinds)>>
 #+end_src
@@ -475,8 +463,9 @@ because I don't want to repeat the name of workspaces again and again.
 #+NAME: layout-keybinds
 | key bind         | command             | description                                               |
 |------------------+---------------------+-----------------------------------------------------------|
-| $mod+b           | splith              | horizontal split                                          |
+| $mod+h           | splith              | horizontal split                                          |
 | $mod+v           | splitv              | vertical split                                            |
+| $mod+n           | split none          | disable any splitting in current focus                    |
 | $mod+s           | layout stacking     | stacking layout                                           |
 | $mod+w           | layout tabbed       | tabbed layout                                             |
 | $mod+e           | layout toggle split | toggle split layout                                       |
@@ -501,18 +490,14 @@ bindsym <<getallkeyvaluepairs(scratchpad-keybinds)>>
 #+end_src
 *** Resizing containers
 #+NAME: resizing-containers-keybinds
-| key bind    | command                   | description                               |
-|-------------+---------------------------+-------------------------------------------|
-| $mod+$left  | resize shrink width 10px  | Resize the focused containers             |
-| $mod+$down  | resize grow height 10px   |                                           |
-| $mod+$up    | resize shrink height 10px |                                           |
-| $mod+$right | resize grow width 10px    |                                           |
-| $mod+Left   | resize shrink width 10px  | Resize the focused containers(arrow keys) |
-| $mod+Down   | resize grow height 10px   |                                           |
-| $mod+Up     | resize shrink height 10px |                                           |
-| $mod+Right  | resize grow width 10px    |                                           |
-| Return      | mode "default"            |                                           |
-| Escape      | mode "default"            | Return to default mode                    |
+| key bind   | command                   | description                   |
+|------------+---------------------------+-------------------------------|
+| $mod+Left  | resize shrink width 10px  | Resize the focused containers |
+| $mod+Down  | resize grow height 10px   |                               |
+| $mod+Up    | resize shrink height 10px |                               |
+| $mod+Right | resize grow width 10px    |                               |
+| Return     | mode "default"            |                               |
+| Escape     | mode "default"            | Return to default mode        |
 #+begin_src conf-space
   mode "resize" {
        bindsym <<getallkeyvaluepairs(resizing-containers-keybinds)>>
