@@ -146,7 +146,11 @@ at the top here.
 This makes it possible to use Emacs frames and the =C-x 5 o= keybinding
 (Switching frames).
 #+begin_src conf-space :tangle home/.config/sway/config
-focus_on_window_activation focus
+  focus_on_window_activation focus
+#+end_src
+
+#+begin_src conf-space :tangle home/.config/sway/config
+  default_border pixel 1
 #+end_src
 ** Background
 The wallpapers are stored in backgrounds, they need to be in =~/.local/share/backgrounds/=.
