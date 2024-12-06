@@ -112,7 +112,6 @@ names of the Arch Linux packages.
 | GNU Emacs         | =emacs-wayland=    | Emacs, it is used to detangle this package                                   |
 | GNU Stow          | =stow=             | It is used to sym link the configuration to correct places                   |
 | Iosevka Nerd font | =ttf-iosevka-nerd= | Default font used in our configuration                                       |
-| Wmenu             | =wmenu=            | Menu/Application launcher                                                    |
 | Grim              | =grim=             | Grab images from a Wayland compositor                                        |
 | Slurp             | =slurp=            | Select a region in a Wayland compositor and print it to the standard output. |
 | Wf-recorder       | =wf-recorder=      | Utility program for screen recording                                         |
@@ -215,65 +214,68 @@ And sometimes, I would like to record videos too.
   esac
 #+end_src
 * MENU
-I use [[https://git.sr.ht/~adnano/wmenu/][Wmenu]] as the menu/command launcher whatever you call it.
+I used to use =wmenu=, but there were quite a few problems with it:
+1. I didn't really use it much, except for running shell commands.
+2. Its =readline= support was inferior to =bash=. And since I use Emacs
+   keybindings this is very important to me. There are also a few
+   other conveniences offered by =bash=, like shell history, and
+   completions not available here.
+
+My solution to these problems is to *JUST DIRECTLY USE BASH INSIDE A
+FOOT WINDOW* ...
+
+This gives us the following advantages:
+1. One package less to install. Which will ultimately make it easier
+   to add support for more distributions.
+2. All Bash commands just work™. Which includes good Emacs =readline=
+   support.
+
+And hence we have =fmenu=, It is a menu but really isn't so its we can
+say it's a /fake/ menu.
+
+Runs the =fmenu= script inside of =foot=. We have set an =app_id= of
+=fmenu=, which will be used by us to position it as a menu.
+
+#+begin_src sh :tangle home/.local/bin/didc_fmenu_run :shebang #!/bin/sh
+  foot -a="fmenu" bash --init-file $1
+#+end_src
+
+Here, we select windows with =fmenu= app_id, and position them as needed.
 #+begin_src conf-space :noweb-ref set-pref-prog
-set $menu "~/.local/bin/didc_wmenu_run"
+  set $menu "$HOME/.local/bin/didc_fmenu_run $HOME/.local/bin/didc_fmenu_command_runner"
+  for_window [app_id="fmenu"] {
+  	   floating enable
+  	   border none
+  	   resize set width 100ppt, resize set height 10ppt
+  	   move position 0 0
+   }
 #+end_src
 
-I have this custom script here because I don't like how the default
-=wmenu_run= script works. Particularly, you can't type an arbitrary
-command in there, you have to select any of the binaries from the menu
-that comes up. This is very inconvenient for me since I do have to
-give some arguments or run a piped command to start some program from
-the menu, for example starting =emacsclient= is impossible to do with
-the default =wmenu_run= script.
-
-This =didc_wmenu_run= script is adapted from [[https://git.sr.ht/~adnano/wmenu/tree/master/item/wmenu_run][the default wmenu script]].
-#+begin_src sh :tangle home/.local/bin/didc_wmenu_run :shebang #!/bin/sh
-  cachedir="${XDG_CACHE_HOME:-"$HOME/.cache"}"
-  cache="$cachedir/wmenu_run"
-
-  [ -d "$cachedir" ] || mkdir -p "$cachedir"
-
-  uptodate() {
-      [ -f "$cache" ] || return 1
-      IFS=:
-      for path in $PATH; do
-          # non-POSIX
-          test "$path" -nt "$cache" && return 1
-      done
-      return 0
-  }
-
-  bins() {
-      IFS=:
-      for path in $PATH; do
-          for bin in "$path"/*; do
-              [ -x "$bin" ] && echo "${bin##*/}"
-          done
-      done
-  }
-
-  path() {
-      if uptodate; then
-          cat "$cache"
-      else
-          bins | sort -u | tee "$cache"
+I wanted the menu to exit automatically after the first command (as
+was the behavior of =wmenu=). But there isn't really a simple way to do
+this. So I use =trap= to run a function immediately after the user
+enters a command (~DEBUG~). Store the current bash command, then run it.
+I also have =sleep= for 1s to allow us to read any output. The ~init~
+variables are there to make sure that this doesn't kill itself before
+the interactive session starts.
+#+begin_src sh :tangle home/.local/bin/didc_fmenu_command_runner :shebang #!/bin/sh
+  init=true
+  PS1='fmenu> '
+  wait_execute_and_exit() {
+      command="$BASH_COMMAND"
+      if [ "$first_command" = false ]; then
+        eval "$command &"
+        sleep 0.5
+        exit
       fi
+      first_command=false
   }
-
-  path_direct() {
-      bins | sort -u
-  }
-
-  path_direct | wmenu <<menu-font>> <<menu-colors>> -l 4 | xargs -0 sh -c
+  trap 'wait_execute_and_exit' DEBUG
 #+end_src
 
-And, a script to delete the cached list to force it to reload the items.
-#+begin_src sh :tangle home/.local/bin/wmenu_reload :shebang #!/bin/sh
-  cachedir="${XDG_CACHE_HOME:-"$HOME/.cache"}"
-  cache="$cachedir/wmenu_run"
-  rm $cache
+
+#+end_src
+
 #+end_src
 * TERMINAL
 Because most programs don't recognize =foot= anyway, I changed it to
@@ -529,11 +531,6 @@ else is updated.
 #+begin_src conf-space  :tangle home/.config/sway/config
   font '<<getvar(table=font-settings,variable="font-name")>>' <<getvar(table=font-settings,variable="font-size")>>
 #+end_src
-** Menu
-#+name: menu-font
-#+begin_src shell
--f '<<getvar(table=font-settings,variable="font-name")>> <<getvar(table=font-settings,variable="font-size")>>'
-#+end_src
 * COLORS
 ** Parameters
 #+name: basic-colors
@@ -566,8 +563,4 @@ inactive_workspace #<<getvar(table=statusbar-inactive-colors,variable="border")>
 ** Lock screen
 #+begin_src conf-unix :tangle home/.config/swaylock/config
 color=<<getvar(table=basic-colors,variable="background")>>
-#+end_src
-** Menu
-#+begin_src shell :noweb-ref menu-colors
--N <<getvar(table=basic-colors,variable="background")>>
 #+end_src
