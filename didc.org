@@ -555,6 +555,10 @@ else is updated.
 | alpha      | 0.65     |
 I set the colors for everything here, although sections may have their
 own table for some custom colors.
+#+name: get-alpha-as-hex
+#+begin_src elisp :var table=basic-colors
+  (format "%X" (* 255 (cadr (assoc "alpha" table))))
+#+end_src
 ** Terminal emulator
 #+begin_src conf-unix :tangle home/.config/foot/foot.ini
   [colors]
@@ -570,7 +574,7 @@ own table for some custom colors.
 | inactive-text | "505050"  |
 #+begin_src conf-space :noweb-ref statusbar-colors
 statusline #<<getvar(table=basic-colors,variable="foreground")>>
-background #<<getvar(table=basic-colors,variable="background")>>
+background #<<getvar(table=basic-colors,variable="background")>><<get-alpha-as-hex()>>
 separator #<<getvar(table=basic-colors,variable="foreground")>>
 inactive_workspace #<<getvar(table=statusbar-inactive-colors,variable="border")>> #<<getvar(table=basic-colors,variable="background")>> #<<getvar(table=statusbar-inactive-colors,variable="inactive-text")>>
 #+end_src
