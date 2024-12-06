@@ -31,11 +31,12 @@
   You should have received a copy of the GNU General Public License
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 * CONFIGURATION MANAGEMENT
-Just some scripts to help out with managing the configuration on the system.
+Just some scripts to help out with managing the configuration on the
+system.
 ** Tangling Emacs lisp script
 This creates the actual directory structure from this org-document(AKA
 tangling).
-#+begin_src elisp :tangle tangle.el :shebang #!/usr/bin/emacs --script
+#+begin_src elisp :tangle tangle.el :shebang #!/bin/env -S emacs --script
   ;; Run this script to `tangle' DIDC from `didc.org', of
   ;; course the only requirement it has is Emacs is itself.
   (message "Loading Org...")

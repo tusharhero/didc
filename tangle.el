@@ -1,4 +1,4 @@
-#!/usr/bin/emacs --script
+#!/bin/env -S emacs --script
 ;; Run this script to `tangle' DIDC from `didc.org', of
 ;; course the only requirement it has is Emacs is itself.
 (message "Loading Org...")
