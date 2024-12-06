@@ -51,20 +51,39 @@ tangling).
 - do the =cp-background= step within Emacs lisp.
 :END:
 I use [[https://gnu.org/software/stow][GNU Stow]] to automatically sym link everything to the correct
-place. The =cp-backgrounds= step is necessary because I can't use org
-babel to automatically copy the backgrounds.
+place.
 #+begin_src makefile :tangle Makefile
   install: tangle stow
-  	  echo "We are done!"
+  	echo "We are done!"
+#+end_src
+
+The =--no-folding= flag make =stow= not symlink entire directories, it
+will just symlink the files individually. This is useful because I
+sometimes put some executables in my ~~/.local/bin~ and that propagates
+back here, which is not what we need.
+#+begin_src makefile :tangle Makefile
   stow: cp-backgrounds
-  	  stow -t ~ -d ${PWD}/home/ .
+  	stow -t ~ -d ${PWD}/home/ . --no-folding
+#+end_src
+
+Tangles the configuration.
+#+begin_src makefile :tangle Makefile
   tangle: tangle.el didc.org
-  	  emacs --script tangle.el
+  	emacs --script tangle.el
+#+end_src
+
+This  step is necessary because I can't use org
+babel to automatically copy the backgrounds.
+#+begin_src makefile :tangle Makefile
   cp-backgrounds: backgrounds
-  	  mkdir -p ${PWD}/home/.local/share/backgrounds
-  	  cp ${PWD}/backgrounds/* ${PWD}/home/.local/share/backgrounds/ -r
+  	mkdir -p ${PWD}/home/.local/share/backgrounds
+  	cp ${PWD}/backgrounds/* ${PWD}/home/.local/share/backgrounds/ -r
+#+end_src
+
+Makefile command for installing Archlinux dependencies,
+#+begin_src makefile :tangle Makefile
   arch-install-deps: archpkglist
-  	  pacman -S - < archpkglist
+  	pacman -S - < archpkglist
 #+end_src
 * HELPERS
 These are some Emacs lisp noweb blocks which are used to do some
