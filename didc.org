@@ -476,18 +476,6 @@ because I don't want to repeat the name of workspaces again and again.
 #+begin_src conf-space
 bindsym <<getallkeyvaluepairs(layout-keybinds)>>
 #+end_src
-*** Scratchpad
-#+NAME: scratchpad-keybinds
-| key bind         | command         | description                                                            |
-|------------------+-----------------+------------------------------------------------------------------------|
-| $mod+Shift+minus | move scratchpad | Move the currently focused window to the scratchpad                    |
-| $mod+minus       | scratchpad show | Show the next scratchpad window or hide the focused scratchpad window. |
-
-Sway has a "scratchpad", which is a bag of holding for windows. You
-can send windows there and get them back later.
-#+begin_src conf-space
-bindsym <<getallkeyvaluepairs(scratchpad-keybinds)>>
-#+end_src
 *** Resizing containers
 #+NAME: resizing-containers-keybinds
 | key bind   | command                   | description                   |
