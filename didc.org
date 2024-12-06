@@ -277,9 +277,19 @@ the interactive session starts.
   trap 'wait_execute_and_exit' DEBUG
 #+end_src
 
-
+* LOCK SCREEN
+#+begin_src conf-unix :tangle home/.config/swaylock/config
+  show-failed-attempts
+  ignore-empty-password
 #+end_src
 
+#+begin_src conf-unix :tangle home/.config/swaylock/config
+  indicator-radius=150
+  indicator-thickness=30
+#+end_src
+
+#+begin_src conf-unix :tangle home/.config/swaylock/config
+  image=~/.local/share/backgrounds/the_star_and_stars.png
 #+end_src
 * TERMINAL
 Because most programs don't recognize =foot= anyway, I changed it to
