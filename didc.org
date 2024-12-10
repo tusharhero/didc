@@ -173,6 +173,42 @@ the top of the screen, I have kept it very simple, currently I use
   }
 #+end_src
 
+Extract the name of the GNU/Linux™ operating system from
+=/etc/os-release=. This information is then used to generate text on the
+status bar. The result is directly embedded in the status bar script
+and only runs at tangle time.
+#+name: distribution-name
+#+begin_src elisp
+  (let* ((distribution
+  	(save-excursion
+  	  (find-file "/etc/os-release")
+  	  (goto-char (point-min))
+  	  (search-forward "ID" nil t)
+  	  (string-trim (cadr (split-string
+  			      (thing-at-point 'line t) "=")))))
+
+         (guix (if (file-directory-p "/gnu/") " "))
+         (nix (if (file-directory-p "/nix/") " "))
+
+         (distribution (pcase distribution
+  		       ("parabola" " ")
+  		       ("hyperbola" " ")
+  		       ("arch" " ")
+  		       ("guix" nil)
+  		       ("nix" nil)
+  		       ("debian" " ")
+  		       ("trisquel" " ")
+  		       ("ubuntu" " ")
+  		       ("fedora" " ")
+  		       ("gentoo" " ")
+  		       (_ distribution)))
+
+         (name-list `("GNU" ,guix ,nix ,distribution "Linux")))
+    (upcase-initials
+     (string-join
+      (remq nil name-list)  "/")))
+#+end_src
+
 This is the script that generates text on the status bar.
 #+begin_src sh :tangle home/.local/bin/didc_status_command :shebang #!/bin/sh
   while true;
@@ -185,7 +221,7 @@ This is the script that generates text on the status bar.
       then
   	volume_symbol="󰖁 ";
       fi
-      echo $volume_symbol $volume% $date;
+      echo "<<distribution-name()>> $volume_symbol$volume% $date";
   done
 #+end_src
 ** Preferred Programs
