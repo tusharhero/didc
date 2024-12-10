@@ -332,7 +332,7 @@ Description=kmonad keyboard config
 [Service]
 Restart=always
 RestartSec=3
-ExecStart=/usr/bin/kmonad .config/kmonad/default.kbd
+ExecStart=/bin/env kmonad .config/kmonad/default.kbd
 Nice=-20
 
 [Install]
