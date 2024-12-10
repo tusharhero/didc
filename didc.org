@@ -296,21 +296,27 @@ I wanted the menu to exit automatically after the first command (as
 was the behavior of =wmenu=). But there isn't really a simple way to do
 this. So I use =trap= to run a function immediately after the user
 enters a command (~DEBUG~). Store the current bash command, then run it.
-I also have =sleep= for 1s to allow us to read any output. The ~init~
-variables are there to make sure that this doesn't kill itself before
-the interactive session starts.
+I also have =sleep= for 1s to allow us to read any output.
+
+The =trap= call itself makes trap call itself... (/Makes sense right?/).
+So we have to account for that, we thus have  =interactive_command=
+variable, which is set before the trap call as =false=, and the trap
+call doesn't run the interactive command stuff (doesn't exit
+basically) on when on itself, we set =interactive_command= to true here.
+So the next time the user enters an command, we run it and exit!
 #+begin_src sh :tangle home/.local/bin/didc_fmenu_command_runner :shebang #!/bin/sh
-  init=true
   PS1='fmenu> '
   wait_execute_and_exit() {
       command="$BASH_COMMAND"
-      if [ "$first_command" = false ]; then
+      if [ "$interactive_command" = true ]; then
         eval "$command &"
         sleep 0.5
         exit
       fi
-      first_command=false
+      interactive_command=true
   }
+
+  interactive_command=false
   trap 'wait_execute_and_exit' DEBUG
 #+end_src
 
