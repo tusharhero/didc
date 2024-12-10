@@ -100,8 +100,8 @@ literate configuration magic through out this document.
 #+end_src
 * PACKAGES
 So, we have this table to document all the packages that are needed
-for this configuration to work. Currently, I will only document the
-names of the Arch Linux packages.
+for this configuration to work. Currently, I only document the names
+of the Arch Linux packages.
 #+name: packages
 | package           | archlinux        | description                                                                  |
 |-------------------+------------------+------------------------------------------------------------------------------|
@@ -149,6 +149,8 @@ This makes it possible to use Emacs frames and the =C-x 5 o= keybinding
   focus_on_window_activation focus
 #+end_src
 
+Make borders thin, this also has the effect of hiding the title bars
+by default.
 #+begin_src conf-space :tangle home/.config/sway/config
   default_border pixel 1
 #+end_src
@@ -191,7 +193,7 @@ This is the script that generates text on the status bar.
 | variable | value | Description       |
 |----------+-------+-------------------|
 | $term    | foot  | Terminal emulator |
-Currently I have only set the terminal emulator here, but I add some other
+Currently I have only set the terminal emulator here, but I will add some other
 programs here in the future.
 #+begin_src conf-space :noweb-ref set-pref-prog
 set <<getallkeyvaluepairs(pref-programs)>>
@@ -277,6 +279,7 @@ the interactive session starts.
 #+end_src
 
 * LOCK SCREEN
+We use swaylock as our lock screen.
 #+begin_src conf-unix :tangle home/.config/swaylock/config
   show-failed-attempts
   ignore-empty-password
@@ -287,6 +290,7 @@ the interactive session starts.
   indicator-thickness=30
 #+end_src
 
+The background for the lock screen.
 #+begin_src conf-unix :tangle home/.config/swaylock/config
   image=~/.local/share/backgrounds/the_star_and_stars.png
 #+end_src
@@ -319,8 +323,8 @@ is pretty useful for Evil(Vim).
     allow-cmd true)
 #+end_src
 
-I will use this Systemd user service to run it at start up. Follow
-this [[https://github.com/kmonad/kmonad/blob/master/doc/faq.md][guide]], before trying to enable this service though.
+I use this Systemd user service to run it at start up. Follow this
+[[https://github.com/kmonad/kmonad/blob/master/doc/faq.md][guide]], before trying to enable this service though.
 #+begin_src conf-toml :tangle home/.config/systemd/user/kmonad.service
 [Unit]
 Description=kmonad keyboard config
@@ -358,9 +362,8 @@ WantedBy=default.target
 :PROPERTIES:
 :header-args: :tangle home/.config/sway/config :noweb yes
 :END:
-I have taken a peculiar approach, going with one of the [[TODO]] that
-I had, I have used tables to set the keybindings. This uses a little
-bit of Emacs lisp and noweb references to achieve this.
+I use tables to set the keybindings. It uses a little bit of Emacs
+lisp and noweb references to achieve this.
 *** Set keys
 #+name: set-keys
 | variable | value | description                                                |
@@ -383,15 +386,16 @@ set <<getallkeyvaluepairs(set-keys)>>
 bindsym <<getallkeyvaluepairs(basic-keybinds)>>
 #+end_src
 
-Drag floating windows by holding down $mod and left mouse
-button. Resize them with right mouse button + $mod.  Despite the name,
-also works for non-floating windows.  Change normal to inverse to use
-left mouse button for resizing and right mouse button for dragging.
+Drag floating windows by holding down =$mod= and =left mouse button=.
+Resize them with =right mouse button= + =$mod=. Despite the name, also
+works for non-floating windows. Change normal to inverse to use left
+mouse button for resizing and right mouse button for dragging.
 #+begin_src conf-space
 floating_modifier $mod normal
 #+end_src
 
 *** Sound
+The volume changing sound effect command.
 #+begin_src conf-space
 set $volume_sound paplay /usr/share/sounds/freedesktop/stereo/audio-volume-change.oga
 #+end_src
@@ -522,6 +526,8 @@ else is updated.
 | alpha      | 0.65     |
 I set the colors for everything here, although sections may have their
 own table for some custom colors.
+
+This is used to get the transparency as a hex number.
 #+name: get-alpha-as-hex
 #+begin_src elisp :var table=basic-colors
   (format "%X" (* 255 (cadr (assoc "alpha" table))))
