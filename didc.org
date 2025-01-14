@@ -207,6 +207,7 @@ and only runs at tangle time.
   		       ("ubuntu" " ")
   		       ("fedora" " ")
   		       ("gentoo" " ")
+  		       ("opensuse" " ")
   		       (_ distribution)))
 
          (name-list `("GNU" ,guix ,nix ,distribution "Linux")))
