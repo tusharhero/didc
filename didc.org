@@ -155,6 +155,11 @@ by default.
 #+begin_src conf-space :tangle home/.config/sway/config
   default_border pixel 1
 #+end_src
+
+Any window that asks to be made floating will be made floating.
+#+begin_src conf-space :tangle home/.config/sway/config
+for_window [title=".*-float-.*"] floating enable
+#+end_src
 ** Background
 The wallpapers are stored in backgrounds, they need to be in =~/.local/share/backgrounds/=.
 #+begin_src conf-space :tangle home/.config/sway/config
