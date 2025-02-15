@@ -211,7 +211,7 @@ and only runs at tangle time.
   		       ("opensuse" "")
   		       (_ distribution)))
 
-         (name-list `("GNU" ,guix ,nix ,distribution "Linux")))
+         (name-list `("" ,guix ,nix ,distribution "")))
     (upcase-initials
      (string-join
       (remq nil name-list)  "/")))
