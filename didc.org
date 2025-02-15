@@ -103,20 +103,21 @@ So, we have this table to document all the packages that are needed
 for this configuration to work. Currently, I only document the names
 of the Arch Linux packages.
 #+name: packages
-| package           | archlinux        | description                                                                  |
-|-------------------+------------------+------------------------------------------------------------------------------|
-| Sway              | =sway=             | The Wayland compositing window manager                                       |
-| Swaybg            | =swaybg=           | Wallpaper tool for Wayland compositors                                       |
-| Swaylock          | =swaylock=         | Screen locker for Wayland                                                    |
-| Foot              | =foot=             | Fast, lightweight, and minimalistic Wayland terminal emulator                |
-| GNU Emacs         | =emacs-wayland=    | Emacs, it is used to detangle this package                                   |
-| GNU Stow          | =stow=             | It is used to sym link the configuration to correct places                   |
-| Iosevka Nerd font | =ttf-iosevka-nerd= | Default font used in our configuration                                       |
-| Grim              | =grim=             | Grab images from a Wayland compositor                                        |
-| Slurp             | =slurp=            | Select a region in a Wayland compositor and print it to the standard output. |
-| Wf-recorder       | =wf-recorder=      | Utility program for screen recording                                         |
-| Kmonad            | =kmonad=           | Used for keyboard configuration                                              |
-| Playerctl         | =playerctl=        | Used for play and pause functionality                                        |
+| package       | archlinux              | description                                                                  |
+|---------------+------------------------+------------------------------------------------------------------------------|
+| Sway          | =sway=                   | The Wayland compositing window manager                                       |
+| Swaybg        | =swaybg=                 | Wallpaper tool for Wayland compositors                                       |
+| Swaylock      | =swaylock=               | Screen locker for Wayland                                                    |
+| Foot          | =foot=                   | Fast, lightweight, and minimalistic Wayland terminal emulator                |
+| GNU Emacs     | =emacs-wayland=          | Emacs, it is used to detangle this package                                   |
+| GNU Stow      | =stow=                   | It is used to sym link the configuration to correct places                   |
+| Iosevka  font | =ttc-iosevka=            | Default font used in our configuration                                       |
+| Nerd fonts    | =ttf-nerd-fonts-symbols= | Used for graphical symbols throughout the configuration.                     |
+| Grim          | =grim=                   | Grab images from a Wayland compositor                                        |
+| Slurp         | =slurp=                  | Select a region in a Wayland compositor and print it to the standard output. |
+| Wf-recorder   | =wf-recorder=            | Utility program for screen recording                                         |
+| Kmonad        | =kmonad=                 | Used for keyboard configuration                                              |
+| Playerctl     | =playerctl=              | Used for play and pause functionality                                        |
 
 #+name: getpkglist
 #+begin_src elisp :var table=packages n=1 :tangle no
@@ -197,17 +198,17 @@ and only runs at tangle time.
          (nix (if (file-directory-p "/nix/") " "))
 
          (distribution (pcase distribution
-  		       ("parabola" " ")
-  		       ("hyperbola" " ")
-  		       ("arch" " ")
+  		       ("parabola" "")
+  		       ("hyperbola" "")
+  		       ("arch" "")
   		       ("guix" nil)
   		       ("nix" nil)
-  		       ("debian" " ")
-  		       ("trisquel" " ")
-  		       ("ubuntu" " ")
-  		       ("fedora" " ")
-  		       ("gentoo" " ")
-  		       ("opensuse" " ")
+  		       ("debian" "")
+  		       ("trisquel" "")
+  		       ("ubuntu" "")
+  		       ("fedora" "")
+  		       ("gentoo" "")
+  		       ("opensuse" "")
   		       (_ distribution)))
 
          (name-list `("GNU" ,guix ,nix ,distribution "Linux")))
@@ -226,7 +227,7 @@ This is the script that generates text on the status bar.
       volume_symbol="";
       if [ "$muted" = "yes" ]
       then
-  	volume_symbol="󰖁 ";
+  	volume_symbol=" ";
       fi
       echo "<<distribution-name()>> $volume_symbol$volume% $date";
   done
@@ -550,10 +551,10 @@ bindsym <<getallkeyvaluepairs(layout-keybinds)>>
 * FONTS
 ** Parameters
 #+name: font-settings
-| variable  | value      |
-|-----------+------------|
-| font-name | Iosevka NF |
-| font-size | 14         |
+| variable  | value   |
+|-----------+---------|
+| font-name | Iosevka |
+| font-size | 14      |
 I set the fonts for everything here, just update this and everything
 else is updated.
 ** Terminal emulator

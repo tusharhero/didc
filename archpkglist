@@ -4,7 +4,8 @@ swaylock
 foot
 emacs-wayland
 stow
-ttf-iosevka-nerd
+ttc-iosevka
+ttf-nerd-fonts-symbols
 grim
 slurp
 wf-recorder
