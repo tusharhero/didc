@@ -194,8 +194,8 @@ and only runs at tangle time.
   	  (string-trim (cadr (split-string
   			      (thing-at-point 'line t) "=")))))
 
-         (guix (if (file-directory-p "/gnu/") " "))
-         (nix (if (file-directory-p "/nix/") " "))
+         (guix (if (file-directory-p "/gnu/") ""))
+         (nix (if (file-directory-p "/nix/") ""))
 
          (distribution (pcase distribution
   		       ("parabola" "")
@@ -279,8 +279,8 @@ This gives us the following advantages:
 2. All Bash commands just work™. Which includes good Emacs =readline=
    support.
 
-And hence we have =fmenu=, It is a menu but really isn't so its we can
-say it's a /fake/ menu.
+And hence we have =fmenu=, It is a menu but really isn't so we can say
+it's a /fake/ menu.
 
 Runs the =fmenu= script inside of =foot=. We have set an =app_id= of
 =fmenu=, which will be used by us to position it as a menu.
@@ -304,14 +304,14 @@ I wanted the menu to exit automatically after the first command (as
 was the behavior of =wmenu=). But there isn't really a simple way to do
 this. So I use =trap= to run a function immediately after the user
 enters a command (~DEBUG~). Store the current bash command, then run it.
-I also have =sleep= for 1s to allow us to read any output.
+I also have a =sleep= call to allow us to read any output.
 
 The =trap= call itself makes trap call itself... (/Makes sense right?/).
-So we have to account for that, we thus have  =interactive_command=
+So we have to account for that, we thus have =interactive_command=
 variable, which is set before the trap call as =false=, and the trap
 call doesn't run the interactive command stuff (doesn't exit
-basically) on when on itself, we set =interactive_command= to true here.
-So the next time the user enters an command, we run it and exit!
+basically) when on itself, we set =interactive_command= to true here. So
+the next time the user enters a command, we run it and exit!
 #+begin_src sh :tangle home/.local/bin/didc_fmenu_command_runner :shebang #!/bin/sh
   PS1='fmenu> '
   wait_execute_and_exit() {
