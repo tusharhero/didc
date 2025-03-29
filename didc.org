@@ -286,19 +286,21 @@ it's a /fake/ menu.
 Runs the =fmenu= script inside of =foot=. We have set an =app_id= of
 =fmenu=, which will be used by us to position it as a menu.
 
-#+begin_src sh :tangle home/.local/bin/didc_fmenu_run :shebang #!/bin/sh
-  foot -a="fmenu" bash --init-file $1
-#+end_src
-
-Here, we select windows with =fmenu= app_id, and position them as needed.
+Here, we select windows with =fmenu= app_id, and position them as
+needed. This was only used by =fmenu= proper initially, but now I have
+added another /[[* ASKPASS][fmenu]]/, and might add more in the future.
 #+begin_src conf-space :noweb-ref set-pref-prog
-  set $menu "$HOME/.local/bin/didc_fmenu_run $HOME/.local/bin/didc_fmenu_command_runner"
   for_window [app_id="fmenu"] {
   	   floating enable
   	   border none
   	   resize set width 100ppt, resize set height 10ppt
   	   move position 0 0
    }
+#+end_src
+
+
+#+begin_src conf-space :noweb-ref set-pref-prog
+  set $menu "foot -a=\"fmenu\" bash --init-file $HOME/.local/bin/didc_fmenu_command_runner"
 #+end_src
 
 I wanted the menu to exit automatically after the first command (as
@@ -328,7 +330,27 @@ the next time the user enters a command, we run it and exit!
   interactive_command=false
   trap 'wait_execute_and_exit' DEBUG
 #+end_src
+* ASKPASS
+We have =askpass= program at home. This is basically =fmenu= with a
+different script, so a /fake/ askpass. We use the same appid to make it
+look the same.
 
+I might make this more general—a command to get some input from the
+user à la ask. I doubt I will ever need it though (since I have
+Emacs).
+
+Here we are redirecting from =/dev/fd/5= to =/dev/stdin/=.
+#+begin_src bash :tangle home/.local/bin/didc_faskpass :shebang #!/bin/sh
+  exec 5>/dev/stdout
+#+end_src
+
+And here, the grandchild process, can still write into =/dev/fd/5= which
+then writes into =/dev/stdout=, and this is how we get the behavior of
+=askpass=, without askpass.
+#+begin_src bash :tangle home/.local/bin/didc_faskpass :shebang #!/bin/sh
+  foot -a="fmenu" \
+       bash -c "stty -echo && echo -n 'Enter password: ' && head -n 1 > /dev/fd/5"
+#+end_src
 * LOCK SCREEN
 We use swaylock as our lock screen.
 #+begin_src conf-unix :tangle home/.config/swaylock/config
