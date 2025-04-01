@@ -16,7 +16,7 @@
   :END:
   The GPLv3 License (GPLv3)
 
-  Copyright © 2024 tusharhero
+  Copyright © 2024-2025 tusharhero
 
   This program is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
