@@ -4,12 +4,6 @@
 #+EMAIL: tusharhero@sdf.org
 #+STARTUP: content
 #+PROPERTY: header-args :noweb yes :mkdirp yes
-* TODO
-** DONE Initial configuration
-** DONE Add most options to org tables
-** DONE Document everything
-** DONE Probably use GNU stow or something
-** DONE Better org tangling game
 * LICENSE NOTICE
   :PROPERTIES:
   :VISIBILITY: folded
