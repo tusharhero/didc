@@ -625,3 +625,25 @@ inactive_workspace #<<getvar(table=statusbar-inactive-colors,variable="border")>
 #+begin_src conf-unix :tangle home/.config/swaylock/config
 color=<<getvar(table=basic-colors,variable="background")>>
 #+end_src
+* THEME SWITCHER
+This is an attempt to write a theme switcher for DIDC. Currently, The
+only purpose it serves is switching between light and dark GTK themes.
+
+#+begin_src bash :tangle home/.local/bin/didc_theme_switcher :shebang #!/bin/bash
+  dark="Adwaita-dark"
+  light="Adwaita-light"
+
+  day_time="6"
+  night_time="18"
+
+  time="$(date +'%H')"
+
+  is_day="$( [ $time -ge $day_time ] && [ $time -lt $night_time ] && echo true || echo false )"
+
+  if "$is_day";
+  then
+      gsettings set org.gnome.desktop.interface gtk-theme "$light"
+  else
+      gsettings set org.gnome.desktop.interface gtk-theme "$dark"
+  fi
+#+end_src
