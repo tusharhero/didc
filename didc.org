@@ -249,10 +249,14 @@ I want to take screenshots peacefully.
 And sometimes, I would like to record videos too.
 #+begin_src sh :tangle home/.local/bin/screenrecord :shebang #!/bin/sh
   mode="$1"
+  fullscreen="$2"
   case $mode in
       start )
           mkdir -p "$HOME/Videos/screenrecordings/"
-          wf-recorder -g "$(slurp)" -f "$HOME/Videos/screenrecordings/$(date +'%s_screenrecording.mp4')"
+  	if [ -z "$fullscreen" ]; then
+  	    dimensions="$(slurp)"
+  	fi
+  	wf-recorder -g "$dimensions" -f "$HOME/Videos/screenrecordings/$(date +'%s_screenrecording.mp4')"
           ;;
       stop ) pkill --signal SIGINT wf-recorder ;;
   esac
